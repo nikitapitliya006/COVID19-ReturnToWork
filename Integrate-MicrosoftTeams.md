@@ -1,6 +1,6 @@
 # Step 2: Integrate Healthcare Bot with Microsoft Teams
 
-For a COVID-19 Return to Work solution, follow these steps to 
+For a COVID-19 Return to Work solution, follow these steps to integrate healthcare bot with Microsoft Teams:
 ### Test bot as an admin
 Conduct a quick test to ensure your bot is available and responding in Teams: 
 * Click on the **Test** option from within the Channel setting page in **Health Bot Admin portal > Integration > Channels**

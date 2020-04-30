@@ -8,8 +8,9 @@ Hi! This is my personal repository with contributions from many peers working on
 2. [Integrate with Microsoft Teams](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Integrate-MicrosoftTeams.md)
 3. [Create the backend Azure SQL Database](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Create-AzureSQLDatabase.md)
 4. [Import 3 scenarios](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Import-Scenarios.md)      required for this solution into Healthcare Bot instance
-5. [Configure Data Connection calls to Azure function](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Call-AzureFunction.md). This Azure function handles write to and read from backend database
-6. Integrate Azure SQL Database with  [Power BI for real-time visualization](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Visualize-PowerBI.md)
+5. [Configure Microsoft Graph API call](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Call-MicrosoftGraph.md). The Microsoft Graph API allows you to use Azure Active Directory details already available for all internal employees
+6. [Configure Data Connection calls to Azure function](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Call-AzureFunction.md). This Azure function handles write to and read from backend database
+7. Integrate Azure SQL Database with  [Power BI for real-time visualization](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Visualize-PowerBI.md)
 
 List of Microsoft services required:
 * Microsoft Healthcare Bot service from Azure Marketplace

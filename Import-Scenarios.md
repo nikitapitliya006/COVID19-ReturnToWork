@@ -12,3 +12,4 @@ For a COVID-19 Return to Work solution, follow these steps to import and test sc
 	"url": "https://<storage-account>.blob.core.windows.net/images/green-check-mark.png"
 }
 ```
+Adaptive cards for Screening scenario are available in **COVID19-ReturnToWork\adaptive cards\Screening** for quick use. Make sure to add images from **COVID19-ReturnToWork\images** to an Azure storage account, make the image Read Anonymous and provide its URL in the code above.

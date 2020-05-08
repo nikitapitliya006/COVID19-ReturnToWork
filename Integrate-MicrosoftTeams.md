@@ -9,7 +9,7 @@ Conduct a quick test to ensure your bot is available and responding in Teams:
 	2.  You can also open the Chat pane, select the  **Add chat**  icon. In **To:**  paste Bot ID _(Copied in Step 1)_
 
 
-### Publish bot for your organization as a Teams App
+### Create bot as a Teams App: Admin settings
 
 1. Install App Studio: App Studio is a Teams app which can be found in the Teams store. Follow this link for direct download:  [App Studio](https://aka.ms/InstallTeamsAppStudio)  (you can also find the app in the app store). In the store, search for App Studio and Install.
 ![](screenshots/AppStudio.png)
@@ -27,7 +27,13 @@ Conduct a quick test to ensure your bot is available and responding in Teams:
 
 ![](screenshots/EnterBotID.png)
 
-5. In **Finish**, select _Test and distribute_. Click on "Install" and "Add" TO-DO add one pic
+5. In **Finish**, select _Test and distribute_. Click on "Install" and "Add"
 ![](screenshots/Test&Distribute.png)
 
 6. On the left pane, you will see a ***RTW*** icon, right click on it and pin it to the left pane for easy access
+
+### Publish bot for your organization as a Teams App
+1. Go to ***Manifest editor*** tab of the above RTW app in Teams. In **Finish**, select _Test and distribute_. Click on "Download", this will download a compressed package of your app 
+2. In the lower left corner of Teams, choose the **Apps** icon. On the Store page, choose "Upload a custom app"
+3. In the Open dialog, navigate to the package you downloaded to upload and choose Open and click Add
+![](screenshots/UploadCustomApp.png)

@@ -1,0 +1,29 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [ 
+    {
+            "type": "TextBlock",
+            "text": "Summary",
+            "id": "summary",
+            "weight":"bolder",
+            "wrap":true
+    },
+    {
+        "type": "TextBlock",
+        "text": "Exposure: YES",
+        "wrap":true
+    },
+    {
+        "type": "TextBlock",
+        "text": "Result: **NOT Cleared to work**",
+        "wrap":true
+    },     
+    {
+          "type": "Image",
+          "url": "https://<storage-account>.blob.core.windows.net/images/red-triangle-exclamation-100.jpg"
+    }
+  ]
+}
+

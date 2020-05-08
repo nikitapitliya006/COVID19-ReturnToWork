@@ -10,7 +10,7 @@ For a COVID-19 Return to Work solution, follow these steps to configure a health
 #### Configure Web Chat channel
 1. In the left pane of Health bot admin portal, navigate to **Integration > Secrets**
 2. Copy APP_SECRET and WEBCHAT_SECRET and keep it handy for Step 4 below
-3. To deploy web chat to Azure, go to Github repository (link) [https://github.com/Microsoft/HealthBotcontainersample]. Click “Deploy to Azure”
+3. To deploy web chat to Azure, go to Github repository [link](https://github.com/Microsoft/HealthBotcontainersample) . Click “Deploy to Azure”
 4. In Deploy to Azure config page, provide the desired configuration details and paste App Secret and Webchat Secret values from Step 2. Click Next -> Deploy
 5. Follow the section **Creating the Web Chat Channel** from the blog [here](https://techcommunity.microsoft.com/t5/healthcare-and-life-sciences/updated-on-4-2-2020-quick-start-setting-up-your-covid-19/ba-p/1230537) for additional customization to website chat window 
 

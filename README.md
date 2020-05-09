@@ -1,6 +1,6 @@
 # COVID-19 Return To Work solution with Microsoft Healthcare Bot & Teams
 
-**Hi! This is my personal repository with contributions from many peers working on _*COVID-19 Return To Work Assessment Solution*_ at Microsoft. This is not production-grade code and has not been stress-tested. All instructions, code and templates are subject to review, modification and extensive testing from the individual user. **
+**Hi! This is my personal repository with contributions from my peers Han Zhang & Greg Beaumont working on _*COVID-19 Return To Work Assessment Solution*_ at Microsoft. This is not production-grade code and has not been stress-tested. All instructions, code and templates are subject to review, modification and extensive testing from the individual user. **
  
 
 ## Contents
@@ -22,7 +22,4 @@ List of Microsoft services required:
 * Azure SQL Database 
 * Microsoft Graph API
 
-
-
-
-More resources to be updated regularly.
+More resources to be updated regularly. ARM templates to automate configuration are being worked on and will be available soon.

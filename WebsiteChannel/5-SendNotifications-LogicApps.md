@@ -1,4 +1,4 @@
-# Step 5: Send automated email notications using Azure Logic Apps
+# Step 5: Send automated notications using Azure Logic Apps
 
 Pre-requisites:
 Azure AD Group ID
@@ -15,4 +15,6 @@ You can use this link to create a
 You can use this link to create a 
 	- [Recurrence Trigger](https://docs.microsoft.com/en-us/azure/connectors/connectors-native-recurrence) app with Azure AD integration and Send email function
 ![](screenshots/LogicApp-TakeDailyAssessment.png)
+
+
 

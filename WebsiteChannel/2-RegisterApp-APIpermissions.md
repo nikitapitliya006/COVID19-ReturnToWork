@@ -1,4 +1,4 @@
-# Step 5: Call the Microsoft Graph REST API 
+# Step 2: Register Healthcare bot as an Enterprise App and provide appropriate API permissions
 
 For a COVID-19 Return to Work solution, follow these steps to register your bot app and use the Microsoft Graph REST API:
 
@@ -10,8 +10,3 @@ For a COVID-19 Return to Work solution, follow these steps to register your bot 
 	-   User.Read.All - Application Type
 4. Generate a client secret: Navigate to the Certificates & Secrets for the App Registration. Create a new client secret and copy the secret to your clipboard
 
-For using Teams channel, 
-5. Switch to **Health Bot service portal > Scenarios > Manage > Covid19 Registration** 
-6. In Data Connection Call for ***OAuth Token|Graph API***, update client ID and client secret from above steps and create a **Payload (object)** similar to this: 
-'grant_type=client_credentials&client_id=_your-client-id_&client_secret=_your-client-secret_&scope=https://graph.microsoft.com/.default'
-7. Test the configuration by running the scenario in Teams Bot using command ***begin register***

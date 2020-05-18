@@ -6,12 +6,12 @@ Choose a UI channel to run this solution. Two options available using this GitHu
 
 ### Web Chat Channel 
 
-1. [Configure Healthcare Bot](https://github.com/nikitapitliya006/ReturnToWork/blob/master/Configure-HealthcareBot.md) host using web chat channel and import 2 scenarios
-2. Azure AD App Registration and Microsoft Graph API - [Configure Microsoft Graph API call](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Call-MicrosoftGraph.md). The Microsoft Graph API allows you to use Azure Active Directory details already available for all internal employees
-3. [Create the backend Azure SQL Database](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Create-AzureSQLDatabase.md)
-4. [Configure Data Connection calls to Azure function](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Call-AzureFunction.md). This Azure function handles write to and read from backend database Configure data connections between health bot and Sql via Azure functions
-5. Configure Azure Logic App to [Trigger daily notifications for registration and daily assessments](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Send-Notifications-LogicApps.md)
-6. Create reports and dashboards with [Power BI for real-time visualization](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Visualize-PowerBI.md)
+1. [Configure Healthcare Bot](https://github.com/nikitapitliya006/ReturnToWork/blob/master/WebsiteChannel/1-Configure-HealthcareBot.md) host using web chat channel and import 2 scenarios
+2. Azure AD App Registration and Microsoft Graph API - [Configure Microsoft Graph API call](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebsiteChannel/2-RegisterApp-APIpermissions.md). The Microsoft Graph API allows you to use Azure Active Directory details already available for all internal employees
+3. [Create the backend Azure SQL Database](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebsiteChannel/3-Createbackend-AzureSQLDatabase.md)
+4. [Configure Data Connection calls to Azure function](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebsiteChannel/4-Setup-AzureFunction.md). This Azure function handles write to and read from backend database Configure data connections between health bot and Sql via Azure functions
+5. Configure Azure Logic App to [Trigger daily notifications for registration and daily assessments](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebsiteChannel/5-Send-Notifications-LogicApps.md)
+6. Create reports and dashboards with [Power BI for real-time visualization](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebsiteChannel/6-Visualize-PowerBI.md)
 
 List of Microsoft services required:
 * Healthcare Bot
@@ -22,11 +22,12 @@ List of Microsoft services required:
 * Power BI Pro or Premium
 
 
-### Microsoft Teams Channel: For using Microsoft Teams as a channel, follow these steps:
-Follow steps 1-6 from Web Chat channel config. Then follow these steps:
-1. Integrate with [Microsoft Teams](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Integrate-MicrosoftTeams.md)
-2. In the left pane of Health bot admin portal, navigate to **Integration > Channels**. Click the activate toggle of the **Microsoft Teams** and Click **Save** to create the channel
+### Microsoft Teams Channel
+For using Microsoft Teams as a channel, follow steps 1-4 from Web Chat channel config. Then follow these steps:
+1. Integrate with [Microsoft Teams](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/TeamsChannel/Integrate-MicrosoftTeams.md)
+2. In the left pane of Healthcare bot admin portal, navigate to **Integration > Channels**. Click the activate toggle of the **Microsoft Teams** and Click **Save** to create the channel
 3. Click on View and copy the Bot Id from Step 1 above
+4. Create reports and dashboards with [Power BI for real-time visualization](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebsiteChannel/6-Visualize-PowerBI.md)
 
 List of Microsoft services required:
 * Healthcare Bot

@@ -1,4 +1,3 @@
-
 # Step 3: Create the backend Azure SQL Database
 
 For a COVID-19 Return to Work solution, follow these steps to configure the backend on an Azure SQL database instance:

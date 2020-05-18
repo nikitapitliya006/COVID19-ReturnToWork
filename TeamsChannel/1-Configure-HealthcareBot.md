@@ -7,7 +7,7 @@ For a COVID-19 Return to Work solution, follow these steps to configure a health
 4. Import scenarios "RTW Registration" and "RTW Daily Assessment" shared by your account team
 
 
-## Channel 1: To run the solution on a Website with authenticated login, follow these steps:
+## To run the solution on a Website with authenticated login, follow these steps:
 #### Configure Web Chat channel
 1. In the left pane of Health bot admin portal, navigate to **Integration > Secrets**
 2. Copy APP_SECRET and WEBCHAT_SECRET and keep it handy for Step 4 below

@@ -14,18 +14,13 @@ For a COVID-19 Return to Work solution, follow these steps to configure a health
 3. To deploy web chat to Azure, go to Github repository [link](https://github.com/Microsoft/HealthBotcontainersample) . Click “Deploy to Azure”
 4. In Deploy to Azure config page, provide the desired configuration details and paste App Secret and Webchat Secret values from Step 2. Click Next -> Deploy
 5. Follow the section **Creating the Web Chat Channel** from the blog [here](https://techcommunity.microsoft.com/t5/healthcare-and-life-sciences/updated-on-4-2-2020-quick-start-setting-up-your-covid-19/ba-p/1230537) for additional customization to website chat window 
-6. In public/index.js file, change triggered_scenario: { trigger:"rtw_register"} to begin the solution
+6. In public/index.js file, change triggered_scenario: { trigger:"RTW_register"} to begin the solution
 
 #### Register an Enterprise application & Grant appropriate API permissions
-Before you begin the next step of Configuring Azure AD login for authenticated access to internal employees only:
-1. In the Azure portal navigate to your organizations Azure Active Directory and create a new App Registration. Learn more about  [creating an app registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#targetText=Azure%20AD%20assigns%20a%20unique,%2C%20API%20permissions%2C%20and%20more.)
-2. Take note of the Application (client) ID, Directory (tenant) ID from Overview blade
-3. Navigate to Authentication > Web > Redirect URIs, and white list the redirect URL. If you are running a US instance of Healthcare Bot redirect URL is https://bot-api-us.healthbot.microsoft.com/bot/redirect/oauth2 .If you are running an EU instance of Healthcare Bot redirect URL is https://bot-api-eu.healthbot.microsoft.com/bot/redirect/oauth2 .Save the settings
-4. Navigate to API permissions and add the following two Microsoft.Graph permissions to enable AAD login:
-	-  	profile (Delegated)
-	-   User.Read (Delegated)
+Before you begin the next step of Configuring Azure AD login for authenticated access to internal employees only, app registration is required. Follow the steps 
+in [Register App & API permissions](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebsiteChannel/2-RegisterApp-APIpermissions.md)
 	
-For more details on End User Authentication: please refer https://docs.microsoft.com/en-us/healthbot/integrations/end_user_authentication
+*For more details on End User Authentication: please refer https://docs.microsoft.com/en-us/healthbot/integrations/end_user_authentication*
 
 
 #### Configure Azure AD login in Healthcare Bot

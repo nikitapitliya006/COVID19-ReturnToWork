@@ -6,11 +6,20 @@ The default login mechanism is to provide a Unique ID and Year of Birth. If you 
 
 ## Method 1: Login using Azure Active Directory
 #### Register an Enterprise application & Grant appropriate API permissions
-Before you begin the next step of Configuring Azure AD login for authenticated access to internal employees only, app registration is required. Follow the steps 
-in [Register App & API permissions](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebsiteChannel/2-RegisterApp-APIpermissions.md)
-	
-*For more details on End User Authentication: please refer https://docs.microsoft.com/en-us/healthbot/integrations/end_user_authentication*
+Before you begin the next step of Configuring Azure AD login for authenticated access to internal employees only, app registration is required. 
+1. Register an Enterprise application: In the Azure portal navigate to your organizations AAD and create a new App Registration. Learn more about  [creating an app registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#targetText=Azure%20AD%20assigns%20a%20unique,%2C%20API%20permissions%2C%20and%20more.)
+2. Take note of the Application (client) ID, Directory (tenant) ID from Overview blade
+3. Enable the relevant permissions for the application and if required ask a Global Admin for the organization to "Grant Admin consent". To enable login, the following Microsoft Graph API permissions need to be added:
+	-  	profile (Delegated)
+	-   User.Read (Delegated)
+	Note:Since these are Delegated type, you do not need Admin consent
+4. Generate a client secret: Navigate to the Certificates & Secrets for the App Registration. Create a new client secret and copy the secret to your clipboard
+5. Navigate to Authentication > Web > Redirect URIs, and white list redirect URL. Healthcare Bot redirect URL for 
+	- US intance: https://bot-api-us.healthbot.microsoft.com/bot/redirect/oauth2 
+	- EU instance: https://bot-api-eu.healthbot.microsoft.com/bot/redirect/oauth2 
+	Save the settings
 
+*For more details on End User Authentication: please refer https://docs.microsoft.com/en-us/healthbot/integrations/end_user_authentication*
 
 #### Configure Azure AD login in Healthcare Bot
 1. In the left pane of Healthcare bot admin portal, navigate to **Integration > Authentication**

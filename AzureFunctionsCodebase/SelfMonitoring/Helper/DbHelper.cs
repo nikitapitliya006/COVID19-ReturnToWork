@@ -133,7 +133,7 @@ namespace BackToWorkFunctions.Helper
 
         private static async Task<bool> InsertData(string sqlStr)
         {
-            var conStr = System.Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
+            var conStr = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
             try
             {
                 using (var conn = new SqlConnection(conStr))
@@ -158,7 +158,7 @@ namespace BackToWorkFunctions.Helper
 
         public static async Task<T> GetDataAsync<T>(string ops, string paramString)
         {
-            var conStr = System.Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
+            var conStr = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
 
             switch (ops)
             {
@@ -304,7 +304,7 @@ namespace BackToWorkFunctions.Helper
 
         public static async Task<bool> GetTeamsAddress(List<string> memberList, List<TeamsAddressQuarantineInfo> teamsAddressQuarantineInfoCollector)
         {
-            var conStr = System.Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
+            var conStr = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
 
             using (SqlConnection conn = new SqlConnection(conStr))
             {
@@ -318,8 +318,6 @@ namespace BackToWorkFunctions.Helper
                     sql_query = sql_query + "'" + memberList[i] + "',";
                 }
                 sql_query = sql_query + "'" + memberList[memberList.Count - 1] + "')";
-                //var sql_conditions = ") AND si.QuarantineRequired = 0";
-                //cmd.CommandText = "SELECT TeamsAddress FROM UserInfo where UserId = " + "'" + UserId + "'";
                 cmd.CommandText = sql_query;
                 cmd.Connection = conn;
 

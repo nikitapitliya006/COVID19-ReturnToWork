@@ -1,6 +1,6 @@
 # COVID-19 Return To Work solution with Microsoft Healthcare Bot, Azure and Teams
 
-***Hi! This is my personal repository with contributions from my peers Han Zhang & Greg Beaumont working on _*COVID-19 Return To Work Assessment Solution*_ at Microsoft. This is not production-grade code and has not been stress-tested. All instructions, code and templates are subject to review, modification and extensive testing from the individual user***
+***Hi! This is my personal repository with contributions from my peers Han Zhang & Greg Beaumont working on _*COVID-19 Back To Work Solution*_ at Microsoft. This is not production-grade code and has not been stress-tested. All instructions, code and templates are subject to review, modification and extensive testing from the individual user***
 
 Choose a UI channel to run this solution. Two options available using this GitHub are - Web Chat and Microsoft Teams
 

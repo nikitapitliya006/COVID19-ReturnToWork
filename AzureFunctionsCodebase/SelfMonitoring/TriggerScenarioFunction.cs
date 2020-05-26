@@ -27,18 +27,18 @@ namespace BackToWorkFunctions
     {
         private static GraphServiceClient _graphServiceClient;
 
-        [FunctionName("ScreenTimerTrigger")]
+        [FunctionName("TriggerScenarioFunction")]
         public static void Run([TimerTrigger("0 0 0 1 1 *")]TimerInfo myTimer, ILogger log)
         {
             Task<List<string>> taskResult = Task.Run(GetMemberList);
             List<string> result = taskResult.Result;
-            ProgrammaticTrigger.GetTeamsAddressFromSqlAndPostScreenTrigger(result);
+            ProgrammaticTrigger.GetTeamsAddressFromSqlAndPostTrigger(result);
         }
 
         private static async Task<List<string>> GetMemberList()
         {
             GraphServiceClient graphClient = GetAuthenticatedGraphClient();
-            string groupId = System.Environment.GetEnvironmentVariable("GroupId", EnvironmentVariableTarget.Process);
+            string groupId = Environment.GetEnvironmentVariable("GroupId", EnvironmentVariableTarget.Process);
             string[] groupIdList = groupId.Split(',');
             List<string> memberList = new List<string>();
             foreach (string item in groupIdList)
@@ -73,10 +73,10 @@ namespace BackToWorkFunctions
 
         private static IAuthenticationProvider CreateAuthorizationProvider()
         {
-            var clientId = System.Environment.GetEnvironmentVariable("AzureADAppClientId", EnvironmentVariableTarget.Process);
-            var clientSecret = System.Environment.GetEnvironmentVariable("AzureADAppClientSecret", EnvironmentVariableTarget.Process);
-            var redirectUri = System.Environment.GetEnvironmentVariable("AzureADAppRedirectUri", EnvironmentVariableTarget.Process);
-            var tenantId = System.Environment.GetEnvironmentVariable("AzureADAppTenantId", EnvironmentVariableTarget.Process);
+            var clientId = Environment.GetEnvironmentVariable("AzureADAppClientId", EnvironmentVariableTarget.Process);
+            var clientSecret = Environment.GetEnvironmentVariable("AzureADAppClientSecret", EnvironmentVariableTarget.Process);
+            var redirectUri = Environment.GetEnvironmentVariable("AzureADAppRedirectUri", EnvironmentVariableTarget.Process);
+            var tenantId = Environment.GetEnvironmentVariable("AzureADAppTenantId", EnvironmentVariableTarget.Process);
             var authority = $"https://login.microsoftonline.com/{tenantId}/v2.0";
             
             List<string> scopes = new List<string>();

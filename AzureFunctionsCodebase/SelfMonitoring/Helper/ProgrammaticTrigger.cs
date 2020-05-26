@@ -13,7 +13,7 @@ namespace BackToWorkFunctions.Helper
     public class ProgrammaticTrigger
     {
         
-        public static async void GetTeamsAddressFromSqlAndPostScreenTrigger(List<string> members)
+        public static async void GetTeamsAddressFromSqlAndPostTrigger(List<string> members)
         {
             //Get Teams Address 
             List<TeamsAddressQuarantineInfo> teamsAddressQuarantineInfoCollector = new List<TeamsAddressQuarantineInfo>();
@@ -23,13 +23,13 @@ namespace BackToWorkFunctions.Helper
             //Post Trigger "screen" scenario
             foreach (var element in teamsAddressQuarantineInfoCollector)
             {
-                PostScreenTrigger(element.TeamsAddress);
+                PostTrigger(element.TeamsAddress);
             }
         }
 
-        public static async void PostScreenTrigger(string teamsAddress)
+        public static async void PostTrigger(string teamsAddress)
         {
-            string URL = System.Environment.GetEnvironmentVariable("Healthbot_Trigger_Call", EnvironmentVariableTarget.Process);
+            string URL = Environment.GetEnvironmentVariable("Healthbot_Trigger_Call", EnvironmentVariableTarget.Process);
             string token = "";
 
             HttpClient client = new HttpClient();
@@ -44,7 +44,7 @@ namespace BackToWorkFunctions.Helper
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             //Add body parameter
-            string scenarioId = System.Environment.GetEnvironmentVariable("Healthbot_ScenarioId_Screening", EnvironmentVariableTarget.Process);
+            string scenarioId = Environment.GetEnvironmentVariable("Healthbot_ScenarioId", EnvironmentVariableTarget.Process);
             var payload = "{\"address\":" + teamsAddress + ",\"scenario\": \"/scenarios/" + scenarioId + "\"}";
             HttpContent content = new StringContent(payload, Encoding.UTF8, "application/json");
 
@@ -60,8 +60,8 @@ namespace BackToWorkFunctions.Helper
 
         public static string GetJwtToken()
         {
-            var healthbot_API_JWT_SECRET = System.Environment.GetEnvironmentVariable("Healthbot_API_JWT_SECRET", EnvironmentVariableTarget.Process);
-            var healthbot_Tenant_Name = System.Environment.GetEnvironmentVariable("Healthbot_Tenant_Name", EnvironmentVariableTarget.Process);
+            var healthbot_API_JWT_SECRET = Environment.GetEnvironmentVariable("Healthbot_API_JWT_SECRET", EnvironmentVariableTarget.Process);
+            var healthbot_Tenant_Name = Environment.GetEnvironmentVariable("Healthbot_Tenant_Name", EnvironmentVariableTarget.Process);
             TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
             int secondsSinceEpoch = (int)t.TotalSeconds;
 

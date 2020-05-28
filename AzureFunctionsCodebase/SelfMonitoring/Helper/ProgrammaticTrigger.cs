@@ -13,21 +13,18 @@ namespace BackToWorkFunctions.Helper
     public class ProgrammaticTrigger
     {
         
-        public static async void GetTeamsAddressFromSqlAndPostTrigger(List<string> members)
+        public static async void GetTeamsAddressFromSqlAndPostTrigger()
         {
-            //Get Teams Address 
             List<TeamsAddressQuarantineInfo> teamsAddressQuarantineInfoCollector = new List<TeamsAddressQuarantineInfo>();
-            bool result = await DbHelper.GetTeamsAddress(members, teamsAddressQuarantineInfoCollector);
-            Console.WriteLine(JsonConvert.SerializeObject(teamsAddressQuarantineInfoCollector));
-
-            //Post Trigger "screen" scenario
+            bool result = await DbHelper.GetTeamsAddress(teamsAddressQuarantineInfoCollector);
+            
             foreach (var element in teamsAddressQuarantineInfoCollector)
             {
-                PostTrigger(element.TeamsAddress);
+                PostTriggerToAllRegisteredTeamsClients(element.TeamsAddress);
             }
         }
 
-        public static async void PostTrigger(string teamsAddress)
+        public static async void PostTriggerToAllRegisteredTeamsClients(string teamsAddress)
         {
             string URL = Environment.GetEnvironmentVariable("Healthbot_Trigger_Call", EnvironmentVariableTarget.Process);
             string token = "";

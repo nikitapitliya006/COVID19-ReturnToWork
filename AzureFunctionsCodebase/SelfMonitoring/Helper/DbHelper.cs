@@ -302,7 +302,7 @@ namespace BackToWorkFunctions.Helper
             }
         }
 
-        public static async Task<bool> GetTeamsAddress(List<string> memberList, List<TeamsAddressQuarantineInfo> teamsAddressQuarantineInfoCollector)
+        public static async Task<bool> GetTeamsAddress(List<TeamsAddressQuarantineInfo> teamsAddressQuarantineInfoCollector)
         {
             var conStr = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
 
@@ -312,12 +312,8 @@ namespace BackToWorkFunctions.Helper
                 SqlCommand cmd = new SqlCommand();
                 SqlDataReader reader;
 
-                var sql_query = "select ui.UserId, ui.TeamsAddress from UserInfo as ui where ui.UserId IN(";
-                for (int i = 0; i < memberList.Count - 1; i++)
-                {
-                    sql_query = sql_query + "'" + memberList[i] + "',";
-                }
-                sql_query = sql_query + "'" + memberList[memberList.Count - 1] + "')";
+                var sql_query = "select UserId, TeamsAddress from UserInfo";
+                
                 cmd.CommandText = sql_query;
                 cmd.Connection = conn;
 
@@ -330,6 +326,39 @@ namespace BackToWorkFunctions.Helper
                         teamsAddressQuarantineInfo.UserId = reader["UserId"].ToString();
                         teamsAddressQuarantineInfo.TeamsAddress = reader["TeamsAddress"].ToString();
                         teamsAddressQuarantineInfoCollector.Add(teamsAddressQuarantineInfo);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public static async Task<bool> GetUserContactInfo(List<UserContactInfo> userContactInfoCollector)
+        {
+            var conStr = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
+
+            using (SqlConnection conn = new SqlConnection(conStr))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                SqlDataReader reader;
+
+                var sql_query = "select UserId, FullName, EmailAddress, MobileNumber from UserInfo";
+                
+                cmd.CommandText = sql_query;
+                cmd.Connection = conn;
+
+                reader = cmd.ExecuteReader();
+                if (reader != null)
+                {
+                    while (reader.Read())
+                    {
+                        UserContactInfo userContactInfo = new UserContactInfo();
+                        userContactInfo.UserId = reader["UserId"].ToString();
+                        userContactInfo.FullName = reader["FullName"].ToString();
+                        userContactInfo.EmailAddress = reader["EmailAddress"].ToString();
+                        userContactInfo.MobilePhone = reader["MobileNumber"].ToString();
+                        userContactInfoCollector.Add(userContactInfo);
                     }
                     return true;
                 }

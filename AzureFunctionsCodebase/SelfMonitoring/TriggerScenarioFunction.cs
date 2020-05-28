@@ -28,68 +28,9 @@ namespace BackToWorkFunctions
         private static GraphServiceClient _graphServiceClient;
 
         [FunctionName("TriggerScenarioFunction")]
-        public static void Run([TimerTrigger("0 0 0 1 1 *")]TimerInfo myTimer, ILogger log)
+        public static void Run([TimerTrigger("0 8 0 * * *"), Disable()]TimerInfo myTimer, ILogger log)
         {
-            Task<List<string>> taskResult = Task.Run(GetMemberList);
-            List<string> result = taskResult.Result;
-            ProgrammaticTrigger.GetTeamsAddressFromSqlAndPostTrigger(result);
-        }
-
-        private static async Task<List<string>> GetMemberList()
-        {
-            GraphServiceClient graphClient = GetAuthenticatedGraphClient();
-            string groupId = Environment.GetEnvironmentVariable("GroupId", EnvironmentVariableTarget.Process);
-            string[] groupIdList = groupId.Split(',');
-            List<string> memberList = new List<string>();
-            foreach (string item in groupIdList)
-            {
-                try
-                {
-                    var groupMembers = await graphClient.Groups[item].Members.Request().GetAsync();
-                    PageIterator<DirectoryObject> groupMemberPageIterator = PageIterator<DirectoryObject>.CreatePageIterator(
-                      graphClient,
-                      groupMembers,
-                      entity => { memberList.Add(entity.Id); return true; });
-                    await groupMemberPageIterator.IterateAsync();
-                }
-                catch (Exception ex)
-                {
-                    memberList = null;
-                }
-            }
-
-            //Get unique member ID list
-            memberList = memberList.Distinct().ToList();
-            return memberList;
+            ProgrammaticTrigger.GetTeamsAddressFromSqlAndPostTrigger();            
         }        
-
-        #region Graph SDK functions
-        private static GraphServiceClient GetAuthenticatedGraphClient()
-        {
-            var authenticationProvider = CreateAuthorizationProvider();
-            _graphServiceClient = new GraphServiceClient(authenticationProvider);
-            return _graphServiceClient;
-        }
-
-        private static IAuthenticationProvider CreateAuthorizationProvider()
-        {
-            var clientId = Environment.GetEnvironmentVariable("AzureADAppClientId", EnvironmentVariableTarget.Process);
-            var clientSecret = Environment.GetEnvironmentVariable("AzureADAppClientSecret", EnvironmentVariableTarget.Process);
-            var redirectUri = Environment.GetEnvironmentVariable("AzureADAppRedirectUri", EnvironmentVariableTarget.Process);
-            var tenantId = Environment.GetEnvironmentVariable("AzureADAppTenantId", EnvironmentVariableTarget.Process);
-            var authority = $"https://login.microsoftonline.com/{tenantId}/v2.0";
-            
-            List<string> scopes = new List<string>();
-            scopes.Add("https://graph.microsoft.com/.default");
-
-            var cca = ConfidentialClientApplicationBuilder.Create(clientId)
-                                              .WithAuthority(authority)
-                                              .WithRedirectUri(redirectUri)
-                                              .WithClientSecret(clientSecret)
-                                              .Build();
-
-            return new MsalAuthenticationProvider(cca, scopes.ToArray());
-        }
-        #endregion
     }
 }

@@ -5,7 +5,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[LabTestInfo](
 	[UserId] [nvarchar](50) NOT NULL,
-	[DateOfEntry] [datetime] NOT NULL,
+	[DateOfEntry] [datetime] NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	[TestType] [nvarchar](30) NULL,
 	[TestDate] [datetime] NULL,
 	[TestResult] [nvarchar](10) NULL
@@ -18,7 +18,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[RequestStatus](
 	[UserId] [nvarchar](50) NOT NULL,
-	[DateOfEntry] [datetime] NOT NULL,
+	[DateOfEntry] [datetime] NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	[ReturnRequestStatus] [nvarchar](10) NULL
 ) ON [PRIMARY]
 GO
@@ -29,7 +29,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[SymptomsInfo](
 	[UserId] [nvarchar](50) NOT NULL,
-	[DateOfEntry] [datetime] NOT NULL,
+	[DateOfEntry] [datetime] NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	[UserIsExposed] [bit] NOT NULL,
 	[ExposureDate] [datetime] NULL,
 	[IsSymptomatic] [bit] NOT NULL,
@@ -44,6 +44,7 @@ CREATE TABLE [dbo].[SymptomsInfo](
 	[SymptomDiarrhea] [bit] NULL,
 	[Temperature] [decimal](5, 2) NULL,
 	[UserIsSymptomatic] [bit] NULL,
+	[ClearToWorkToday] [bit] NOT NULL,
 	[GUID] [nvarchar](50) NULL
 ) ON [PRIMARY]
 GO
@@ -74,12 +75,4 @@ CREATE TABLE [dbo].[UserInfo](
 	[RequestBTWEmail] [nvarchar](100) NULL,
 	[RequestBTWMobile] [nvarchar](15) NULL,
  ) ON [PRIMARY]
-GO
-ALTER TABLE [dbo].[LabTestInfo] ADD  CONSTRAINT [DF_LabTestInfo_DateOfEntry]  DEFAULT (getdate()) FOR [DateOfEntry]
-GO
-ALTER TABLE [dbo].[RequestStatus] ADD  CONSTRAINT [DF_RequestStatus_DateOfEntry]  DEFAULT (getdate()) FOR [DateOfEntry]
-GO
-ALTER TABLE [dbo].[SymptomsInfo] ADD  CONSTRAINT [DF_SymptomsInfo_DateOfEntry]  DEFAULT (getdate()) FOR [DateOfEntry]
-GO
-ALTER TABLE [dbo].[UserInfo] ADD  CONSTRAINT [DF_UserInfo_Country]  DEFAULT (N'US') FOR [Country]
 GO

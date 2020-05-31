@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
 using BackToWorkFunctions.Model;
 using System.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 
 namespace BackToWorkFunctions.Helper
@@ -106,6 +104,7 @@ namespace BackToWorkFunctions.Helper
                         "[SymptomDiarrhea], " +
                         "[Temperature], " +
                         "[UserIsSymptomatic], " +
+                        "[ClearToWorkToday], " +
                         "[GUID]) " +
                         "values" +
                         "('" + typeof(T).GetProperty("UserId").GetValue(model) + "', " +
@@ -124,6 +123,7 @@ namespace BackToWorkFunctions.Helper
                         "'" + typeof(T).GetProperty("SymptomDiarrhea").GetValue(model) + "', " +
                         "'" + typeof(T).GetProperty("Temperature").GetValue(model) + "', " +
                         "'" + typeof(T).GetProperty("UserIsSymptomatic").GetValue(model) + "', " +
+                        "'" + typeof(T).GetProperty("ClearToWorkToday").GetValue(model) + "', " +
                         "'" + typeof(T).GetProperty("GUID").GetValue(model) + "')";
                     break;
             }
@@ -293,6 +293,7 @@ namespace BackToWorkFunctions.Helper
                                 symptomsInfo.SymptomDiarrhea = DBNull.Value.Equals(reader["SymptomDiarrhea"]) ? false : (bool)reader["SymptomDiarrhea"];
                                 symptomsInfo.Temperature = DBNull.Value.Equals(reader["Temperature"]) ? 0 : (decimal)reader["Temperature"];
                                 symptomsInfo.UserIsSymptomatic = DBNull.Value.Equals(reader["UserIsSymptomatic"]) ? false : (bool)reader["UserIsSymptomatic"];
+                                symptomsInfo.ClearToWorkToday = DBNull.Value.Equals(reader["ClearToWorkToday"]) ? false : (bool)reader["ClearToWorkToday"];
                                 symptomsInfo.GUID = reader["GUID"].ToString();
                                 lstsymptomsInfo.Add(symptomsInfo);
                             }

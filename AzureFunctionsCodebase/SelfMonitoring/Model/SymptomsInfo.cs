@@ -22,6 +22,7 @@ namespace BackToWorkFunctions.Model
         public bool SymptomDiarrhea { get; set; }
         public decimal Temperature { get; set; }
         public bool UserIsSymptomatic { get; set; }
+        public bool ClearToWorkToday { get; set; }        
         public string GUID { get; set; }
     }
 }

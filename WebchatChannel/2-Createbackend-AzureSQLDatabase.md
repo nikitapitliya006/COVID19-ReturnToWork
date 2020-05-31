@@ -1,9 +1,8 @@
-
-# Step 3: Create the backend Azure SQL Database
+# Step 2: Create the backend Azure SQL Database
 
 For a COVID-19 Return to Work solution, follow these steps to configure the backend on an Azure SQL database instance:
 
-## Step 3.1 Create an Azure SQL database
+## Step 2.1 Create an Azure SQL database
 
 1. Sign in to Azure [portal](https://portal.azure.com/). From the Search bar, search for and select Azure SQL 
 2. Click Add. On the Select SQL deployment option page, select the SQL databases tile, and Resource type = Single database. Click Create
@@ -23,11 +22,11 @@ For a COVID-19 Return to Work solution, follow these steps to configure the back
 12. Select Review + create at the bottom of the page
 13. After reviewing settings, select Create
 
-## Step 3.2 Download SSMS if not already setup
+## Step 2.2 Download SSMS if not already setup
 
 1. Download [SQL Server Management Studio (SSMS)](https://aka.ms/ssmsfullsetup). *For more information, click [ here](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15)*
 
-## Step 3.3 Connect to your instance
+## Step 2.3 Connect to your instance
 
 1. Sign in to Azure [portal](https://portal.azure.com/)
 2. Navigate to the SQL database or SQL managed instance you want to query
@@ -45,7 +44,9 @@ For a COVID-19 Return to Work solution, follow these steps to configure the back
 6. Select Connect. The Object Explorer window opens
 7. To view the database's objects, expand Databases and then expand your database node
 
-## Step 3.4 Create tables
-Set Context to use the appropriate database. Execute the BackToWork-CreateTablesScript.sql in master/SQLPersistence/Scripts folder to create the required tables.
+## Step 2.4 Create tables
+
+1. Set Context to use the appropriate database out of all available databases on this SQL Server
+2. Execute the BackToWork-CreateTablesScript.sql in master/Scripts folder to create the required tables
 
 

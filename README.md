@@ -20,7 +20,7 @@ List of Microsoft services required:
 * Power BI Pro or Premium
 
 
-### Microsoft Teams Channel
+### Microsoft Teams Channel - This is a work in progress
 For using Microsoft Teams as a channel, follow steps 1-4 from Web Chat channel config. Then follow these steps:
 1. Integrate with [Microsoft Teams](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/TeamsChannel/Integrate-MicrosoftTeams.md)
 2. In the left pane of Healthcare bot admin portal, navigate to **Integration > Channels**. Click the activate toggle of the **Microsoft Teams** and Click **Save** to create the channel

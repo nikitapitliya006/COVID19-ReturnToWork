@@ -1,6 +1,5 @@
 using System;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using BackToWorkFunctions.Helper;
 using BackToWorkFunctions.Model;
@@ -10,8 +9,9 @@ namespace BackToWorkFunctions
 {
     public static class TriggerNotification
     {
+        [Disable]
         [FunctionName("TriggerNotification")]
-        public static void Run([TimerTrigger("0 8 0 * * *"), Disable()]TimerInfo myTimer, ILogger log)
+        public static void Run([TimerTrigger("0 8 0 * * *")]TimerInfo myTimer, ILogger log)
         {
             SendNotificationToAllRegisteredUsers();            
         }

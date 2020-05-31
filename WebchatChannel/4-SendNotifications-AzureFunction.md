@@ -22,11 +22,11 @@ Open your codebase and go to TriggerNotification.cs
 
 Final code for an enabled trigger function running everyday at 8 am looks like:
 ```
-	[FunctionName("TriggerNotification")]
-    public static void Run([TimerTrigger("0 8 0 * * *")]TimerInfo myTimer, ILogger log)
-    {
-        SendNotificationToAllRegisteredUsers();            
-    }
+[FunctionName("TriggerNotification")]
+public static void Run([TimerTrigger("0 8 0 * * *")]TimerInfo myTimer, ILogger log)
+{
+    SendNotificationToAllRegisteredUsers();            
+}
 ```
 
 

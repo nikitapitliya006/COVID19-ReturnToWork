@@ -47,6 +47,6 @@ For a COVID-19 Return to Work solution, follow these steps to configure the back
 ## Step 2.4 Create tables
 
 1. Set Context to use the appropriate database out of all available databases on this SQL Server
-2. Execute the BackToWork-CreateTablesScript.sql in master/Scripts folder to create the required tables
+2. Execute the BackToWork-CreateTablesScript.sql in [Scripts folder](https://github.com/nikitapitliya006/COVID19-ReturnToWork/tree/master/Scripts) to create the required tables
 
 

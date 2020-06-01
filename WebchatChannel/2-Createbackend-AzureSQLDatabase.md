@@ -1,6 +1,8 @@
 # Step 2: Create the backend Azure SQL Database
 
+**ARM template to deploy required Azure SQL Database coming up shortly**
 For a COVID-19 Return to Work solution, follow these steps to configure the backend on an Azure SQL database instance:
+
 
 ## Step 2.1 Create an Azure SQL database
 
@@ -9,7 +11,7 @@ For a COVID-19 Return to Work solution, follow these steps to configure the back
 3. In **Create SQL database** form under Basics, fill out the necessary details of subscription, resource group, database name 
 4. Select pre-existing database Server. Or Create new and provide the necessary admin login details.
 5. Select No for "Want to use SQL elastic pool"
-6. Under "Compute + storage", if you want to change the defaults, select Configure database. For Back To Work solution, you can use the following option:
+6. Under "Compute + storage", if you want to change the defaults, select Configure database. For Back To Work solution, you can use the following option (Only a suggestion, users are advised to use this at discretion):
     1.  Change the Compute tier from Provisioned to Serverless
     2.  Review and change the settings for vCores to be MAX 4 and MIN 1
     3.  Enable auto-pause and change the Data max size to be 32 GB

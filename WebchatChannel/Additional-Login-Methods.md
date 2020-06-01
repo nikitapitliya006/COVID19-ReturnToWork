@@ -36,4 +36,4 @@ Before you begin the next step of Configuring Azure AD login for authenticated a
 
 ## Method 2: Login using UserId + Password OR Email Address + Password
 
-The SQL database created in Step 3 of the Website Channel solution has a UserInfo table with a column "Password" to allow you store encrypted passwords. Please make necessary changes in the client application side (Healthcare bot scenario in this case) to implement the required functionality.
+The SQL database created in Step 2 of the Webchat Channel solution has a UserInfo table with a column "Password" to allow you store encrypted passwords. Please make necessary changes in the client application side (Healthcare bot scenario in this case) to implement the required functionality.

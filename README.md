@@ -1,12 +1,12 @@
-# COVID-19 Return To Work solution with Microsoft Healthcare Bot, Azure and Teams
+# COVID-19 Return To Work solution with Microsoft Healthcare Bot, Azure platform and Teams
 
-***Hi! This is my personal repository with contributions from my peers Han Zhang & Greg Beaumont working on _*COVID-19 Back To Work Solution*_ at Microsoft. This is not production-grade code and has not been stress-tested. All instructions, code and templates are subject to review, modification and extensive testing from the individual user***
+***Hi! This is my personal repository with contributions from Han Zhang & Greg Beaumont working on _*COVID-19 Back To Work Solution*_ at Microsoft. This is not production-grade code and has not been stress-tested. All instructions, code and templates are subject to review, modification and extensive testing from the individual user***
 
-Choose a UI channel to run this solution. Two options available using this GitHub are - Web Chat and Microsoft Teams
+Choose a UI channel to run this solution. Two options available using this GitHub are - Web Chat and Microsoft Teams (Instructions for using MS Teams are being refined)
 
 ### Web Chat Channel 
 
-1. [Configure Healthcare Bot](https://github.com/nikitapitliya006/ReturnToWork/blob/master/WebchatChannel/1-Configure-HealthcareBot.md) host using web chat channel and import 2 scenarios
+1. [Configure Healthcare Bot](https://github.com/nikitapitliya006/ReturnToWork/blob/master/WebchatChannel/1-Configure-HealthcareBot.md) host using web chat channel 
 2. [Create the backend Azure SQL Database](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebchatChannel/3-Createbackend-AzureSQLDatabase.md)
 3. [Configure Data Connection calls to Azure function](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebchatChannel/4-Setup-AzureFunction.md). This Azure function handles write to and read from backend database 
 4. Configure Azure function to [Send automated notifications for taking assessment](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebchatChannel/5-SendNotifications-LogicApps.md)

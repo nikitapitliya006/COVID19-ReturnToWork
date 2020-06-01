@@ -3,14 +3,28 @@
 **ARM template to deploy required Azure function apps coming up shortly**
 Pre-requisites:
 * All registered users should have provided a valid email address to get notified with a link of the bot 
-* For info on sending SMS reminders, refer last section of this page. In this case, all registered users should provide a mobile number during registration.
+* For info on sending SMS reminders, refer last section of this page. In this case, all registered users should provide a mobile number during registration
 
 Azure functions are used to send automated notification either based on a 
 1. HTTP trigger where administrator manually triggers the send notification function
 2. Recurrence based trigger to send notification at a specific pre-determined time interval
 
-In this GitHub repo, we provide an Azure function that will send email notification at a recurrence.  
-If you followed Step 3 - DataConnection with Azure function and created all the Azure functions, go to Azure portal -> BackToWorkFunctions -> Functions. You will see 
+In this GitHub repo, we provide an Azure function that will send email notification at a recurrence using SendGrid settings.  
+
+## Step 4.1: Setup SendGrid and add properties to Azure Functions Configuration
+1. Go to Azure Portal, and search for SendGrid
+2. Open SendGrid Accounts, and click Add. Fill out requested information and record the password in a secure place
+3. Once the account is created, go back to SendGrid Accounts page, click on newly created account, and click manage. This will open up external management portal for SendGrid
+4. Go to Settings on the left pane of the page, and click on "API Keys"
+5. Enter a unique Key name and Create a Full Permission API key. Record the API key in a secure place as you will not be able to view it again
+*For more details on SendGrid settings and functionality, refer [Azure functions binding with SendGrid](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-sendgrid?tabs=csharp)
+
+6. If you followed Step 3 [DataConnection with Azure function](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebchatChannel/3-DataConnection-AzureFunction.md) and created all the Azure functions, go to Azure portal -> BackToWorkFunctions -> Settings -> Configuration. 
+	- Create a +New Application Setting with Name = SendGrid_APIKEY, Value = API Key from Step 5 above
+	- Create another application setting with Name = AssessmentBotLink, Value = link for the Back to work Assessment that you want your users to take
+
+## Step 4.2: Enable and modify Azure Function
+If you followed Step 3 [DataConnection with Azure function](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebchatChannel/3-DataConnection-AzureFunction.md) and created all the Azure functions, go to Azure portal -> BackToWorkFunctions -> Functions. You will see 
 
 | Name                | Trigger  | Status     |
 |---------------------|----------|------------|

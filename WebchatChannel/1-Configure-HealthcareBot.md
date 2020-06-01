@@ -6,7 +6,9 @@ For a COVID-19 Return to Work solution, follow these steps:
 1. Login to [https://portal.azure.com](https://portal.azure.com/) and search for ***Microsoft Healthcare Bot*** in the Azure Marketplace
 2. Enter details choosing Plan: W1-Free and click “Subscribe”
 3. In Azure portal, go to **Home | Software as a Service (SaaS)**, click on the healthcare bot instance. In Overview blade, click on "Manage Account". You will be redirected to Health Bot Service admin portal 
-4. Import scenario "COVID19 Back to Work SQL.json" and spreadsheet "Localization - Custom strings for SQL Back to Work.xlsx" from the [Scripts folder](https://github.com/nikitapitliya006/COVID19-ReturnToWork/tree/master/Scripts)
+4. Download scenario "COVID19 Back to Work SQL.json" and spreadsheet "Localization - Custom strings for SQL Back to Work.xlsx" from the [Scripts folder](https://github.com/nikitapitliya006/COVID19-ReturnToWork/tree/master/Scripts) . In healthcare bot portal -
+	- using the left navigation pane, go to Scenarios -> Manage. Click Import and choose "COVID19 Back to Work SQL.json" without any naming changes (You can edit after import succeeds)
+	- using the left navigation pane, go to Language -> Localization. Click Import and choose "Localization - Custom strings for SQL Back to Work.xlsx", Preview Changes and click Save
 
 
 ## Step 1.2: Configure Web Chat channel

@@ -1,59 +1,38 @@
 # Step 1: Configure Healthcare Bot
 
-For a COVID-19 Return to Work solution, follow these steps to configure a healthcare bot
+For a COVID-19 Return to Work solution, follow these steps:
+
+## Step 1.1: Configure a healthcare bot
 1. Login to [https://portal.azure.com](https://portal.azure.com/) and search for ***Microsoft Healthcare Bot*** in the Azure Marketplace
 2. Enter details choosing Plan: W1-Free and click “Subscribe”
 3. In Azure portal, go to **Home | Software as a Service (SaaS)**, click on the healthcare bot instance. In Overview blade, click on "Manage Account". You will be redirected to Health Bot Service admin portal 
-4. Import scenarios "RTW Registration" and "RTW Daily Assessment" shared by your account team
+4. Import scenario "COVID19 Back to Work SQL.json" and spreadsheet "Localization - Custom strings for SQL Back to Work.xlsx" from the [Scripts folder](https://github.com/nikitapitliya006/COVID19-ReturnToWork/tree/master/Scripts)
 
 
-## To run the solution on a Website with authenticated login, follow these steps:
-#### Configure Web Chat channel
+## Step 1.2: Configure Web Chat channel
 1. In the left pane of Health bot admin portal, navigate to **Integration > Secrets**
 2. Copy APP_SECRET and WEBCHAT_SECRET and keep it handy for Step 4 below
 3. To deploy web chat to Azure, go to Github repository [link](https://github.com/Microsoft/HealthBotcontainersample) . Click “Deploy to Azure”
 4. In Deploy to Azure config page, provide the desired configuration details and paste App Secret and Webchat Secret values from Step 2. Click Next -> Deploy
 5. Follow the section **Creating the Web Chat Channel** from the blog [here](https://techcommunity.microsoft.com/t5/healthcare-and-life-sciences/updated-on-4-2-2020-quick-start-setting-up-your-covid-19/ba-p/1230537) for additional customization to website chat window 
-6. In public/index.js file, change triggered_scenario: { trigger:"rtw_register"} to begin the solution
+6. In public/index.js file, change triggered_scenario: { trigger:"covid19_backToWork_sql"} to begin the solution
 
-#### Register an Enterprise application & Grant appropriate API permissions
-Before you begin the next step of Configuring Azure AD login for authenticated access to internal employees only:
-1. In the Azure portal navigate to your organizations Azure Active Directory and create a new App Registration. Learn more about  [creating an app registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#targetText=Azure%20AD%20assigns%20a%20unique,%2C%20API%20permissions%2C%20and%20more.)
-2. Take note of the Application (client) ID, Directory (tenant) ID from Overview blade
-3. Navigate to Authentication > Web > Redirect URIs, and white list the redirect URL. If you are running a US instance of Healthcare Bot redirect URL is https://bot-api-us.healthbot.microsoft.com/bot/redirect/oauth2 .If you are running an EU instance of Healthcare Bot redirect URL is https://bot-api-eu.healthbot.microsoft.com/bot/redirect/oauth2 .Save the settings
-4. Navigate to API permissions and add the following two Microsoft.Graph permissions to enable AAD login:
-	-  	profile (Delegated)
-	-   User.Read (Delegated)
-	
-For more details on End User Authentication: please refer https://docs.microsoft.com/en-us/healthbot/integrations/end_user_authentication
+**Note:** 
+* To implement other types of login methods, please refer [Additional-Login-Methods](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebchatChannel/Additional-Login-Methods.md)
 
+#### Common UI changes to scenarios:
+1. To edit the scenario logic without adding new symptoms or additional parameters, go to Scenarios -> Manage tab, click on the scenario and make necessary changes in Visual Designer or Code part. If you are planning to add more symptoms or a new workflow, changes need to be cascaded to Azure functions in Data Connection calls and the backend Azure SQL Database. For a detailed list of steps involved in end-to-end customization, refer [Advanced Customization to Logic](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebchatChannel/AdvancedCustomization-BackToWorkLogic.md)
 
-#### Configure Azure AD login in Healthcare Bot
-1. In the left pane of Healthcare bot admin portal, navigate to **Integration > Authentication**
-2. Add a New Authentication provider. Sample values 
-	- Name: Azure AD
-	- Description: Authenticate users via Azure AD login
-	- Authentication method: OAuth 2.0: End-user Authentication
-3. Paste values of Client ID and Client secret obtained during registering the app in previous section
-4. Next set of values are - (*tenant-ID* = your organization's Azure tenant ID)
-	- Authorization URL: https://login.microsoftonline.com/*tenant-ID*/oauth2/v2.0/authorize 
-	- Access Token URL: https://login.microsoftonline.com/*tenant-ID*/oauth2/v2.0/token
-	- scope: https://graph.microsoft.com/.default
-5. Save or Update the details
-
-#### Some UI changes to scenarios:
-1. To edit scenarios, click on each scenario and make necessary changes in Visual Designer or Code part
-2. To add images for _Cleared to Work_ or _Not Cleared to Work_, please use the respective adaptive cards and paste image URL. One example to store image could be as a blob in Azure storage -
+2. Images of a green check mark and a red cross mark are available at [CheckMark](https://hbstenantasaeusprod.blob.core.windows.net/resources/contosohealthsystemteamsbot-g4ubxvv/CheckMark.png) and [Cross](https://hbstenantasaeusprod.blob.core.windows.net/resources/contosohealthsystemteamsbot-g4ubxvv/Cross.png) . Add these images (or other) in Resources -> Files tab in the healthcare bot admin portal. You can use them for denoting _Cleared to Work_ or _Not Cleared to Work_. One example of adding image in an adaptive card within a Container element is shown below:
 ```
 {
 	"type": "Image",
-	"url": "https://<storage-account>.blob.core.windows.net/images/green-check-mark.png"
+	"url": conversation.resourcesUrl + "/CheckMark.png",
+	"width": "100px",
+	"height": "100px"				
 }
 ```
 
-**Note:**
-* Adaptive cards for Screening scenario are available in **COVID19-ReturnToWork\AdaptiveCards\Screening** for quick use. Make sure to add images from **COVID19-ReturnToWork\images** to an Azure storage account, make the image Read Anonymous and provide its URL in the code above.
-* There is an Azure storage account created during configuring the Azure Function app, you can use the same storage accoutn to store these images to be used in adaptive cards.
 
 
 

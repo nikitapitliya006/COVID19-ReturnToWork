@@ -73,14 +73,6 @@
       "zoneRedundant": {
         "type": "bool",
         "defaultValue": false
-      },
-      "bacpacStorageKey": {
-        "type": "string",
-        "defaultValue": "?"
-      },
-      "masterBacpacUrl": {
-        "type": "string",
-        "defaultValue": "https://saadflabblob.blob.core.windows.net/returntowork/ReturnToWorkTables.bacpac"
       }
     },
     "variables": {
@@ -123,25 +115,8 @@
                 "sku": {
                     "name": "[parameters('skuName')]",
                     "tier": "[parameters('tier')]"
-                },
-                "resources": [
-                    {
-                      "type": "extensions",
-                      "apiVersion": "2014-04-01-preview",
-                      "properties": {
-                        "operationMode": "Import",
-                        "storageKey": "[parameters('bacpacStorageKey')]",
-                        "storageKeyType": "SharedAccessKey",
-                        "administratorLogin": "[parameters('administratorLogin')]",
-                        "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
-                        "storageUri": "[parameters('masterBacpacUrl')]"
-                      },
-                      "name": "Import",
-                      "dependsOn": [
-                        "[resourceId('Microsoft.Sql/servers/databases', variables('serverName'), parameters('databaseName'))]"
-                      ]
-                    }
-                  ]
+                }
+                
             },
             {
             "condition": "[parameters('allowAzureIPs')]",

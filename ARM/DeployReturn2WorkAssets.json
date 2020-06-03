@@ -230,5 +230,11 @@
           }
         ]
       }
-    ]
+    ],
+    "outputs": {
+      "dbserverName": {
+          "type":"string",
+          "value": "[variables('serverName')]"
+      }
+    }
   }

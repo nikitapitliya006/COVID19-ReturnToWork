@@ -167,11 +167,15 @@ namespace BackToWorkFunctions.Helper
                     using (SqlConnection conn = new SqlConnection(conStr))
                     {
                         conn.Open();
-                        SqlCommand cmd = new SqlCommand();
+                        string CommandText = "SELECT * FROM UserInfo where UserId = @userId;";
+
+                        SqlCommand cmd = new SqlCommand(CommandText, conn);
+                        cmd.Parameters.Add("@userId", SqlDbType.VarChar);
+                        cmd.Parameters["@userId"].Value = paramString;
                         SqlDataReader reader;
 
-                        cmd.CommandText = "SELECT * FROM UserInfo where UserId = " + "'" + paramString + "'";
-                        cmd.Connection = conn;
+                        //cmd.CommandText = "SELECT * FROM UserInfo where UserId = " + "'" + paramString + "'";
+                        //cmd.Connection = conn;
 
                         reader = cmd.ExecuteReader();
                         if (reader != null)
@@ -209,11 +213,15 @@ namespace BackToWorkFunctions.Helper
                     using (SqlConnection conn = new SqlConnection(conStr))
                     {
                         conn.Open();
-                        SqlCommand cmd = new SqlCommand();
+                        string CommandText = "SELECT * FROM LabTestInfo where UserId = @userId;";
+
+                        SqlCommand cmd = new SqlCommand(CommandText, conn);
+                        cmd.Parameters.Add("@userId", SqlDbType.VarChar);
+                        cmd.Parameters["@userId"].Value = paramString;
                         SqlDataReader reader;
 
-                        cmd.CommandText = "SELECT * FROM LabTestInfo where UserId = " + "'" + paramString + "'";
-                        cmd.Connection = conn;
+/*                        cmd.CommandText = "SELECT * FROM LabTestInfo where UserId = " + "'" + paramString + "'";
+                        cmd.Connection = conn;*/
 
                         reader = cmd.ExecuteReader();
                         if (reader != null)
@@ -237,11 +245,18 @@ namespace BackToWorkFunctions.Helper
                     using (SqlConnection conn = new SqlConnection(conStr))
                     {
                         conn.Open();
-                        SqlCommand cmd = new SqlCommand();
+                        string CommandText = "SELECT * FROM RequestStatus where UserId = @userId;";
+
+                        SqlCommand cmd = new SqlCommand(CommandText, conn);
+                        cmd.Parameters.Add("@userId", SqlDbType.VarChar);
+                        cmd.Parameters["@userId"].Value = paramString;
+                        SqlDataReader reader;
+
+/*                        SqlCommand cmd = new SqlCommand();
                         SqlDataReader reader;
 
                         cmd.CommandText = "SELECT * FROM RequestStatus where UserId = " + "'" + paramString + "'";
-                        cmd.Connection = conn;
+                        cmd.Connection = conn;*/
 
                         reader = cmd.ExecuteReader();
                         if (reader != null)
@@ -264,8 +279,15 @@ namespace BackToWorkFunctions.Helper
                     using (SqlConnection conn = new SqlConnection(conStr))
                     {
                         conn.Open();
-                        SqlCommand cmd = new SqlCommand();
+                        string CommandText = "SELECT * FROM SymptomsInfo where UserId = @userId;";
+
+                        SqlCommand cmd = new SqlCommand(CommandText, conn);
+                        cmd.Parameters.Add("@userId", SqlDbType.VarChar);
+                        cmd.Parameters["@userId"].Value = paramString;
                         SqlDataReader reader;
+
+/*                        SqlCommand cmd = new SqlCommand();
+                        SqlDataReader reader;*/
 
                         cmd.CommandText = "SELECT * FROM SymptomsInfo where UserId = " + "'" + paramString + "'";
                         cmd.Connection = conn;

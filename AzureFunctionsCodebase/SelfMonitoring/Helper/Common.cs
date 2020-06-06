@@ -56,7 +56,11 @@ namespace BackToWorkFunctions.Helper
                 EmailMessage.SetFrom(new EmailAddress(SrcEmail, AuthorName));
                 EmailMessage.AddTo(DestEmail);
                 EmailMessage.SetSubject("Return To Work: QR Code with Assessment Results");
-                var MessageContent = "<p>Thank you for taking Screening Assessment. Here is the QR Code to show at your facility entrance.\n\n </p>";
+                //var MessageContent = "<p>Thank you for taking Screening Assessment. Here is the QR Code to show at your facility entrance.\n\n" + "<img src=\"data:image/png;base64," + imageBase64Encoding + "\" /> </p>";
+                var MessageContent = "<p>Thank you for taking Screening Assessment. Please use the QR Code attached to show at your facility entrance.\n\n </p>";
+                // Console.Write(MessageContent);
+                EmailMessage.AddAttachment("qrcode.png", imageBase64Encoding);
+                //Console.Write(imageBase64Encoding);
                 EmailMessage.AddContent(MimeType.Html, MessageContent);
 
                 //QRCode image embed                
@@ -72,7 +76,7 @@ namespace BackToWorkFunctions.Helper
             }
         }
 
-        public static bool GenerateQRCode(string GUID)
+        public static async Task<bool> GenerateQRCodeAsync(string GUID)
         {
             try
             {
@@ -90,10 +94,13 @@ namespace BackToWorkFunctions.Helper
                 }
 
                 Console.WriteLine("QR Code generated");
-                var qrCode1 = new FileContentResult(resultQR, "image/png");
+                // var qrCode1 = new FileContentResult(resultQR, "image/png");
+                string resultQRBase64 = Convert.ToBase64String(resultQR);
+                // System.IO.File.WriteAllBytes(@"\qrcode.png", resultQR);
 
-                //SendEmailWithQRCode()
-
+/*                await Common.SendEmailWithQRCode("zhha@microsoft.com", "hzhan@umich.edu", "Han Zhang", "Han Zhang", resultQRBase64, "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");
+                await Common.SendEmailWithQRCode("Nikita.Pitliya@microsoft.com", "zhha@microsoft.com", "Han Zhang MS", "Han Zhang", resultQRBase64, "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");
+                await Common.SendEmailWithQRCode("Nikita.Pitliya@microsoft.com", "hzhan@umich.edu", "Han Zhang Personal", "Han Zhang", resultQRBase64, "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");*/
                 return true;
             }
             catch(Exception ex)

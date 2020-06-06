@@ -26,6 +26,9 @@ namespace BackToWorkFunctions
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
+            
+  
+            /*Common.GenerateQRCodeAsync("fa6ee320-0986-4e0c-86f0-19cd6d50d23c");*/
 
             try
             {

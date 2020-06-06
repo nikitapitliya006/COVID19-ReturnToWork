@@ -98,9 +98,6 @@ namespace BackToWorkFunctions.Helper
                 string resultQRBase64 = Convert.ToBase64String(resultQR);
                 // System.IO.File.WriteAllBytes(@"\qrcode.png", resultQR);
 
-/*                await Common.SendEmailWithQRCode("zhha@microsoft.com", "hzhan@umich.edu", "Han Zhang", "Han Zhang", resultQRBase64, "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");
-                await Common.SendEmailWithQRCode("Nikita.Pitliya@microsoft.com", "zhha@microsoft.com", "Han Zhang MS", "Han Zhang", resultQRBase64, "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");
-                await Common.SendEmailWithQRCode("Nikita.Pitliya@microsoft.com", "hzhan@umich.edu", "Han Zhang Personal", "Han Zhang", resultQRBase64, "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");*/
                 return true;
             }
             catch(Exception ex)

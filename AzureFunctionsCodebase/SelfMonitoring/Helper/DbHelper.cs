@@ -16,48 +16,46 @@ namespace BackToWorkFunctions.Helper
             switch (ops)
             {
                 case Constants.postUserInfo:
-                    sqlStr = "Insert into[dbo].[UserInfo] " +
-                        "([UserId], " +
-                        "[UserGUID], " +
-                        "[Password], " +
-                        "[FirstName], " +
-                        "[LastName], " +
-                        "[FullName], " +
-                        "[Role], " +
-                        "[YearOfBirth], " +
-                        "[MobileNumber], " +
-                        "[EmailAddress], " +
-                        "[StreetAddress1], " +
-                        "[StreetAddress2], " +
-                        "[City], " +
-                        "[State], " +
-                        "[Country], " +
-                        "[ZipCode], " +
-                        "[TeamsAddress], " +
-                        "[TwilioAddress], " +
-                        "[RequestBTWEmail], " +
-                        "[RequestBTWMobile]) " +
-                        "values" +
-                        "('" + typeof(T).GetProperty("UserId").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("UserGUID").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("Password").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("FirstName").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("LastName").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("FullName").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("Role").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("YearOfBirth").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("MobileNumber").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("EmailAddress").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("StreetAddress1").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("StreetAddress2").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("City").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("State").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("Country").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("ZipCode").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("TeamsAddress").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("TwilioAddress").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("RequestBTWEmail").GetValue(model) + "', " +
-                        "'" + typeof(T).GetProperty("RequestBTWMobile").GetValue(model) + "')";
+                    var conStr = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
+                    try
+                    {
+                        using (var conn = new SqlConnection(conStr))
+                        {
+                            string spName = @"dbo.[PostUserInfo]";
+                            SqlCommand cmd = new SqlCommand(spName, conn);
+                            cmd.CommandType = CommandType.StoredProcedure;
+
+                            cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = typeof(T).GetProperty("UserId").GetValue(model);
+                            cmd.Parameters.Add("@UserGUID", SqlDbType.VarChar).Value = typeof(T).GetProperty("UserGUID").GetValue(model);
+                            cmd.Parameters.Add("@Password", SqlDbType.VarChar).Value = typeof(T).GetProperty("Password").GetValue(model);
+                            cmd.Parameters.Add("@FirstName", SqlDbType.VarChar).Value = typeof(T).GetProperty("FirstName").GetValue(model);
+                            cmd.Parameters.Add("@LastName", SqlDbType.VarChar).Value = typeof(T).GetProperty("LastName").GetValue(model);
+                            cmd.Parameters.Add("@FullName", SqlDbType.VarChar).Value = typeof(T).GetProperty("FullName").GetValue(model);
+                            cmd.Parameters.Add("@Role", SqlDbType.VarChar).Value = typeof(T).GetProperty("Role").GetValue(model);
+                            cmd.Parameters.Add("@YearOfBirth", SqlDbType.VarChar).Value = typeof(T).GetProperty("YearOfBirth").GetValue(model);
+                            cmd.Parameters.Add("@MobileNumber", SqlDbType.VarChar).Value = typeof(T).GetProperty("MobileNumber").GetValue(model);
+                            cmd.Parameters.Add("@EmailAddress", SqlDbType.VarChar).Value = typeof(T).GetProperty("EmailAddress").GetValue(model);
+                            cmd.Parameters.Add("@StreetAddress1", SqlDbType.VarChar).Value = typeof(T).GetProperty("StreetAddress1").GetValue(model);
+                            cmd.Parameters.Add("@StreetAddress2", SqlDbType.VarChar).Value = typeof(T).GetProperty("StreetAddress2").GetValue(model);
+                            cmd.Parameters.Add("@City", SqlDbType.VarChar).Value = typeof(T).GetProperty("City").GetValue(model);
+                            cmd.Parameters.Add("@State", SqlDbType.VarChar).Value = typeof(T).GetProperty("State").GetValue(model);
+                            cmd.Parameters.Add("@Country", SqlDbType.VarChar).Value = typeof(T).GetProperty("Country").GetValue(model);
+                            cmd.Parameters.Add("@ZipCode", SqlDbType.VarChar).Value = typeof(T).GetProperty("ZipCode").GetValue(model);
+                            cmd.Parameters.Add("@TeamsAddress", SqlDbType.VarChar).Value = typeof(T).GetProperty("TeamsAddress").GetValue(model);
+                            cmd.Parameters.Add("@TwilioAddress", SqlDbType.VarChar).Value = typeof(T).GetProperty("TwilioAddress").GetValue(model);
+                            cmd.Parameters.Add("@RequestBTWEmail", SqlDbType.VarChar).Value = typeof(T).GetProperty("RequestBTWEmail").GetValue(model);
+                            cmd.Parameters.Add("@RequestBTWMobile", SqlDbType.VarChar).Value = typeof(T).GetProperty("RequestBTWMobile").GetValue(model);
+
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                            conn.Close();                            
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        return false;
+                    }
                     break;
 
                 case Constants.postLabTestInfo:
@@ -79,7 +77,7 @@ namespace BackToWorkFunctions.Helper
                     sqlStr = "Insert into [dbo].[RequestStatus] " +
                         "([UserId], " +
                         "[DateOfEntry], " +
-                        "[ReturnRequestStatus]) " +
+                        "[  ]) " +
                         "values" +
                         "('" + typeof(T).GetProperty("UserId").GetValue(model) + "'," +
                         "'" + typeof(T).GetProperty("DateOfEntry").GetValue(model) + "', " +
@@ -126,35 +124,9 @@ namespace BackToWorkFunctions.Helper
                         "'" + typeof(T).GetProperty("ClearToWorkToday").GetValue(model) + "', " +
                         "'" + typeof(T).GetProperty("GUID").GetValue(model) + "')";
                     break;
-            }
-            bool datainserted = await InsertData(sqlStr);
-            return datainserted;
-        }
-
-        private static async Task<bool> InsertData(string sqlStr)
-        {
-            var conStr = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
-            try
-            {
-                using (var conn = new SqlConnection(conStr))
-                {
-                    string data = sqlStr;
-
-                    using (SqlCommand cmd = new SqlCommand(data, conn))
-                    {
-                        cmd.CommandType = CommandType.Text;
-                        conn.Open();
-                        cmd.ExecuteNonQuery();
-                    }
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-        }
+            }            
+            return true;
+        }        
 
         public static async Task<T> GetDataAsync<T>(string ops, string paramString)
         {
@@ -162,23 +134,20 @@ namespace BackToWorkFunctions.Helper
 
             switch (ops)
             {
-                case Constants.getUserInfo:
+                case Constants.getUserInfo:                    
                     UserInfo userInfo = new UserInfo();
                     using (SqlConnection conn = new SqlConnection(conStr))
                     {
                         conn.Open();
-                        SqlCommand cmd = new SqlCommand();
-                        SqlDataReader reader;
+                        SqlCommand cmd = new SqlCommand("GetUserInfo", conn);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new SqlParameter("@UserId", paramString));
+                        SqlDataReader reader = cmd.ExecuteReader();
 
-                        cmd.CommandText = "SELECT * FROM UserInfo where UserId = " + "'" + paramString + "'";
-                        cmd.Connection = conn;
-
-                        reader = cmd.ExecuteReader();
                         if (reader != null)
                         {
                             while (reader.Read())
                             {
-
                                 userInfo.UserId = reader["UserId"].ToString();
                                 userInfo.UserGUID = reader["UserGUID"].ToString();
                                 userInfo.Password = reader["Password"].ToString();
@@ -201,21 +170,21 @@ namespace BackToWorkFunctions.Helper
                                 userInfo.RequestBTWMobile = reader["RequestBTWMobile"].ToString();
                             }
                         }
+                        reader.Close();
+                        conn.Close();
                         return (T)Convert.ChangeType(userInfo, typeof(T));
-                    }
+                    }                    
 
                 case Constants.getLabTestInfo:
                     List<LabTestInfo> lstlabTestInfo = new List<LabTestInfo>();
                     using (SqlConnection conn = new SqlConnection(conStr))
                     {
                         conn.Open();
-                        SqlCommand cmd = new SqlCommand();
-                        SqlDataReader reader;
+                        SqlCommand cmd = new SqlCommand("GetLabTestInfo", conn);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new SqlParameter("@UserId", paramString));
+                        SqlDataReader reader = cmd.ExecuteReader();
 
-                        cmd.CommandText = "SELECT * FROM LabTestInfo where UserId = " + "'" + paramString + "'";
-                        cmd.Connection = conn;
-
-                        reader = cmd.ExecuteReader();
                         if (reader != null)
                         {
                             while (reader.Read())
@@ -237,13 +206,11 @@ namespace BackToWorkFunctions.Helper
                     using (SqlConnection conn = new SqlConnection(conStr))
                     {
                         conn.Open();
-                        SqlCommand cmd = new SqlCommand();
-                        SqlDataReader reader;
+                        SqlCommand cmd = new SqlCommand("GetRequestStatus", conn);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new SqlParameter("@UserId", paramString));
+                        SqlDataReader reader = cmd.ExecuteReader();
 
-                        cmd.CommandText = "SELECT * FROM RequestStatus where UserId = " + "'" + paramString + "'";
-                        cmd.Connection = conn;
-
-                        reader = cmd.ExecuteReader();
                         if (reader != null)
                         {
                             while (reader.Read())
@@ -264,16 +231,13 @@ namespace BackToWorkFunctions.Helper
                     using (SqlConnection conn = new SqlConnection(conStr))
                     {
                         conn.Open();
-                        SqlCommand cmd = new SqlCommand();
-                        SqlDataReader reader;
+                        SqlCommand cmd = new SqlCommand("GetSymptomsInfo", conn);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new SqlParameter("@UserId", paramString));
+                        SqlDataReader reader = cmd.ExecuteReader();
 
-                        cmd.CommandText = "SELECT * FROM SymptomsInfo where UserId = " + "'" + paramString + "'";
-                        cmd.Connection = conn;
-
-                        reader = cmd.ExecuteReader();
                         if (reader != null)
                         {
-
                             while (reader.Read())
                             {
                                 SymptomsInfo symptomsInfo = new SymptomsInfo();
@@ -310,15 +274,9 @@ namespace BackToWorkFunctions.Helper
             using (SqlConnection conn = new SqlConnection(conStr))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand();
-                SqlDataReader reader;
-
-                var sql_query = "select UserId, TeamsAddress from UserInfo";
-                
-                cmd.CommandText = sql_query;
-                cmd.Connection = conn;
-
-                reader = cmd.ExecuteReader();
+                SqlCommand cmd = new SqlCommand("GetAllTeamsAddress", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataReader reader = cmd.ExecuteReader();
                 if (reader != null)
                 {
                     while (reader.Read())
@@ -341,15 +299,9 @@ namespace BackToWorkFunctions.Helper
             using (SqlConnection conn = new SqlConnection(conStr))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand();
-                SqlDataReader reader;
-
-                var sql_query = "select UserId, FullName, EmailAddress, MobileNumber from UserInfo";
-                
-                cmd.CommandText = sql_query;
-                cmd.Connection = conn;
-
-                reader = cmd.ExecuteReader();
+                SqlCommand cmd = new SqlCommand("GetAllUsersContactInfo", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataReader reader = cmd.ExecuteReader();
                 if (reader != null)
                 {
                     while (reader.Read())

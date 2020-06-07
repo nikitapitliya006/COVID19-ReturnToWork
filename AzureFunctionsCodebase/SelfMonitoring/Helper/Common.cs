@@ -56,10 +56,9 @@ namespace BackToWorkFunctions.Helper
                 EmailMessage.SetFrom(new EmailAddress(SrcEmail, AuthorName));
                 EmailMessage.AddTo(DestEmail);
                 EmailMessage.SetSubject("Return To Work: QR Code with Assessment Results");
-                var MessageContent = "<p>Thank you for taking Screening Assessment. Here is the QR Code to show at your facility entrance.\n\n </p>";
+                var MessageContent = "<p>Thank you for taking Screening Assessment. Please use the QR Code attached to show at your facility entrance.\n\n </p>";                
+                EmailMessage.AddAttachment("qrcode.png", imageBase64Encoding);
                 EmailMessage.AddContent(MimeType.Html, MessageContent);
-
-                //QRCode image embed                
 
                 var EmailResponse = await EmailClient.SendEmailAsync(EmailMessage);
                 Console.Write(EmailResponse);
@@ -72,7 +71,7 @@ namespace BackToWorkFunctions.Helper
             }
         }
 
-        public static bool GenerateQRCode(string GUID)
+        public static async Task<bool> GenerateQRCodeAsync(string GUID)
         {
             try
             {
@@ -90,9 +89,7 @@ namespace BackToWorkFunctions.Helper
                 }
 
                 Console.WriteLine("QR Code generated");
-                var qrCode1 = new FileContentResult(resultQR, "image/png");
-
-                //SendEmailWithQRCode()
+                string resultQRBase64 = Convert.ToBase64String(resultQR);
 
                 return true;
             }

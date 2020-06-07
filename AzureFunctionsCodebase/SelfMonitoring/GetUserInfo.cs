@@ -29,7 +29,6 @@ namespace BackToWorkFunctions
 
             try
             {
-
                 UserInfo userInfo = await DbHelper.GetDataAsync<UserInfo>(Constants.getUserInfo, UserId);
 
                 log.LogInformation(JsonConvert.SerializeObject(userInfo));

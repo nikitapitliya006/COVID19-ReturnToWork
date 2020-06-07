@@ -32,6 +32,8 @@ CREATE TABLE [dbo].[SymptomsInfo](
 	[DateOfEntry] [datetime] NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	[UserIsExposed] [bit] NOT NULL,
 	[ExposureDate] [datetime] NULL,
+	[QuarantineStartDate] [datetime] NULL,
+	[QuarantineEndDate] [datetime] NULL,
 	[IsSymptomatic] [bit] NOT NULL,
 	[SymptomFever] [bit] NULL,
 	[SymptomCough] [bit] NULL,

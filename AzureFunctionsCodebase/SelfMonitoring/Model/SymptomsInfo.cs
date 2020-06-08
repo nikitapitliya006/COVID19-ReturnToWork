@@ -10,6 +10,8 @@ namespace BackToWorkFunctions.Model
         public string DateOfEntry { get; set; }
         public bool UserIsExposed { get; set; }
         public string ExposureDate { get; set; }
+        public string QuarantineStartDate { get; set; }
+        public string QuarantineEndDate { get; set; }
         public bool IsSymptomatic { get; set; }
         public bool SymptomFever { get; set; }
         public bool SymptomCough { get; set; }

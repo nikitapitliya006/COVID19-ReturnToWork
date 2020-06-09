@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using BackToWorkFunctions.Model;
 using System.Data.SqlClient;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyModel.Resolution;
 
 namespace BackToWorkFunctions.Helper
 {
@@ -17,8 +18,7 @@ namespace BackToWorkFunctions.Helper
 
                 switch (ops)
                 {
-                    case Constants.postUserInfo:
-                        
+                    case Constants.postUserInfo:                        
                         using (var conn = new SqlConnection(sqlConnectionString))
                         {
                             string spName = @"dbo.[PostUserInfo]";
@@ -33,12 +33,9 @@ namespace BackToWorkFunctions.Helper
                             conn.Open();
                             cmd.ExecuteNonQuery();
                             conn.Close();
-                        }
-                        
+                        }                        
                     break;
-
-                    case Constants.postLabTestInfo:
-                        
+                    case Constants.postLabTestInfo:                        
                         using (var conn = new SqlConnection(sqlConnectionString))
                         {
                             string spName = @"dbo.[PostLabTestInfo]";
@@ -54,12 +51,9 @@ namespace BackToWorkFunctions.Helper
                             conn.Open();
                             cmd.ExecuteNonQuery();
                             conn.Close();
-                        }
-                        
+                        }                        
                     break;
-
-                    case Constants.postRequestStatus:
-                        
+                    case Constants.postRequestStatus:                        
                         using (var conn = new SqlConnection(sqlConnectionString))
                         {
                             string spName = @"dbo.[PostRequestStatus]";
@@ -70,16 +64,12 @@ namespace BackToWorkFunctions.Helper
                             cmd.Parameters.Add("@DateOfEntry", SqlDbType.DateTime).Value = typeof(T).GetProperty("DateOfEntry").GetValue(model);
                             cmd.Parameters.Add("@ReturnRequestStatus", SqlDbType.VarChar).Value = typeof(T).GetProperty("UserId").GetValue(model);
 
-
                             conn.Open();
                             cmd.ExecuteNonQuery();
                             conn.Close();
-                        }
-                        
+                        }                        
                     break;
-
-                    case Constants.postSymptomsInfo:
-                        
+                    case Constants.postSymptomsInfo:                        
                         using (var conn = new SqlConnection(sqlConnectionString))
                         {
                             string spName = @"dbo.[PostSymptomsInfo]";
@@ -107,12 +97,10 @@ namespace BackToWorkFunctions.Helper
                             cmd.Parameters.Add("@ClearToWorkToday", SqlDbType.Bit).Value = typeof(T).GetProperty("ClearToWorkToday").GetValue(model);
                             cmd.Parameters.Add("@GUID", SqlDbType.VarChar).Value = typeof(T).GetProperty("GUID").GetValue(model);
 
-
                             conn.Open();
                             cmd.ExecuteNonQuery();
                             conn.Close();
-                        }
-                       
+                        }                       
                     break;
                 }
                 return true;
@@ -125,18 +113,16 @@ namespace BackToWorkFunctions.Helper
 
         public static async Task<T> GetDataAsync<T>(string ops, string paramString)
         {
-            var sqlConStr = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
-
-            switch (ops)
+            try
             {
-                case Constants.getUserInfo:                    
-                    UserInfo userInfo = new UserInfo();
-                    try
-                    {
+                var sqlConStr = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
+                switch (ops)
+                {
+                    case Constants.getUserInfo:
+                        UserInfo userInfo = new UserInfo();                        
                         using (var conn = new SqlConnection(sqlConStr))
                         {
-                            string spName = @"dbo.[GetUserInfo]";
-                            SqlCommand cmd = new SqlCommand(spName, conn);
+                            SqlCommand cmd = new SqlCommand("GetUserInfo", conn);
                             cmd.CommandType = CommandType.StoredProcedure;
 
                             cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = paramString;
@@ -156,21 +142,13 @@ namespace BackToWorkFunctions.Helper
                             reader.Close();
                             conn.Close();
                             return (T)Convert.ChangeType(userInfo, typeof(T));
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception(ex.ToString());
-                    }           
+                        }                       
 
-                case Constants.getLabTestInfo:
-                    List<LabTestInfo> lstlabTestInfo = new List<LabTestInfo>();
-                    try
-                    {
+                    case Constants.getLabTestInfo:
+                        List<LabTestInfo> lstlabTestInfo = new List<LabTestInfo>();                        
                         using (var conn = new SqlConnection(sqlConStr))
                         {
-                            string spName = @"dbo.[GetLabTestInfo]";
-                            SqlCommand cmd = new SqlCommand(spName, conn);
+                            SqlCommand cmd = new SqlCommand("GetLabTestInfo", conn);
                             cmd.CommandType = CommandType.StoredProcedure;
 
                             cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = paramString;
@@ -194,20 +172,12 @@ namespace BackToWorkFunctions.Helper
                             conn.Close();
                             return (T)Convert.ChangeType(lstlabTestInfo, typeof(T));
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception(ex.ToString());
-                    }
 
-                case Constants.getRequestStatus:
-                    List<RequestStatus> lstrequestStatus = new List<RequestStatus>();
-                    try
-                    {
+                    case Constants.getRequestStatus:
+                        List<RequestStatus> lstrequestStatus = new List<RequestStatus>();                        
                         using (var conn = new SqlConnection(sqlConStr))
                         {
-                            string spName = @"dbo.[GetRequestStatus]";
-                            SqlCommand cmd = new SqlCommand(spName, conn);
+                            SqlCommand cmd = new SqlCommand("GetRequestStatus", conn);
                             cmd.CommandType = CommandType.StoredProcedure;
 
                             cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = paramString;
@@ -228,22 +198,13 @@ namespace BackToWorkFunctions.Helper
                             reader.Close();
                             conn.Close();
                             return (T)Convert.ChangeType(lstrequestStatus, typeof(T));
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception(ex.ToString());
-                    }
+                        }                        
 
-                default:
-                    List<SymptomsInfo> lstsymptomsInfo = new List<SymptomsInfo>();
-
-                    try
-                    {
+                    default:
+                        List<SymptomsInfo> lstsymptomsInfo = new List<SymptomsInfo>();                        
                         using (var conn = new SqlConnection(sqlConStr))
                         {
-                            string spName = @"dbo.[GetSymptomsInfo]";
-                            SqlCommand cmd = new SqlCommand(spName, conn);
+                            SqlCommand cmd = new SqlCommand("GetSymptomsInfo", conn);
                             cmd.CommandType = CommandType.StoredProcedure;
 
                             cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = paramString;
@@ -282,19 +243,20 @@ namespace BackToWorkFunctions.Helper
                             conn.Close();
                             return (T)Convert.ChangeType(lstsymptomsInfo, typeof(T));
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception(ex.ToString());
-                    }
+                }
             }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+
         }
 
         public static bool GetTeamsAddress(List<TeamsAddressQuarantineInfo> teamsAddressQuarantineInfoCollector)
-        {
-            var sqlConStr = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
+        {            
             try
             {
+                var sqlConStr = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
                 using (SqlConnection conn = new SqlConnection(sqlConStr))
                 {
                     conn.Open();
@@ -354,4 +316,5 @@ namespace BackToWorkFunctions.Helper
             }
         }
     }
+
 }

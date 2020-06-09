@@ -28,7 +28,7 @@ namespace BackToWorkFunctions
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
 
-                bool dataRecorded = await DbHelper.PostDataAsync(labTestInfo, Constants.postLabTestInfo);
+                bool dataRecorded = DbHelper.PostDataAsync(labTestInfo, Constants.postLabTestInfo);
 
                 if (dataRecorded)
                 {

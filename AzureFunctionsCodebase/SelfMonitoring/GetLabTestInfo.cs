@@ -32,13 +32,6 @@ namespace BackToWorkFunctions
 
             try
             {
-                //var config = new ConfigurationBuilder()
-                //    .SetBasePath(context.FunctionAppDirectory)
-                //    .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-                //    .AddEnvironmentVariables()
-                //    .Build();
-
-                //var conStr = config["SqlConnectionString"];
 
                 List<LabTestInfo> lstlabTestInfo = await DbHelper.GetDataAsync<List<LabTestInfo>>(Constants.getLabTestInfo, UserId);
 

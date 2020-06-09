@@ -12,10 +12,10 @@ namespace BackToWorkFunctions.Helper
     public class ProgrammaticTrigger
     {
         
-        public static async void GetTeamsAddressFromSqlAndPostTrigger()
+        public static void GetTeamsAddressFromSqlAndPostTrigger()
         {
             List<TeamsAddressQuarantineInfo> teamsAddressQuarantineInfoCollector = new List<TeamsAddressQuarantineInfo>();
-            bool result = await DbHelper.GetTeamsAddress(teamsAddressQuarantineInfoCollector);
+            bool result = DbHelper.GetTeamsAddress(teamsAddressQuarantineInfoCollector);
             
             foreach (var element in teamsAddressQuarantineInfoCollector)
             {

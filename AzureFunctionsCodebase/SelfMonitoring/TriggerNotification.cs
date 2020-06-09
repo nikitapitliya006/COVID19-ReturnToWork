@@ -16,7 +16,7 @@ namespace BackToWorkFunctions
             SendNotificationToAllRegisteredUsers();            
         }
 
-        public static async void SendNotificationToAllRegisteredUsers()
+        public static void SendNotificationToAllRegisteredUsers()
         {
             List<UserContactInfo> userContactInfoCollector = new List<UserContactInfo>();
             DbHelper.GetUserContactInfo(userContactInfoCollector);
@@ -27,7 +27,7 @@ namespace BackToWorkFunctions
             {
                 try
                 {
-                    await Common.SendEmail(userContact.EmailAddress, "admin@contosohealthsystem.onmicrosoft.com", "Contoso Health System Admin", userContact.FullName, assessmentLink, sendgridApi);
+                    Common.SendEmail(userContact.EmailAddress, "admin@contosohealthsystem.onmicrosoft.com", "Contoso Health System Admin", userContact.FullName, assessmentLink, sendgridApi);
                 }
                 catch (Exception ex)
                 {

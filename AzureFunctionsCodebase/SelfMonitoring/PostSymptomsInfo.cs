@@ -27,7 +27,7 @@ namespace BackToWorkFunctions
                 {
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
-                bool dataRecorded = await DbHelper.PostDataAsync(symptomsInfo, Constants.postSymptomsInfo);
+                bool dataRecorded = DbHelper.PostDataAsync(symptomsInfo, Constants.postSymptomsInfo);
 
                 //bool qrcodeGenerated = Common.GenerateQRCode(symptomsInfo.GUID);
                 if (dataRecorded)

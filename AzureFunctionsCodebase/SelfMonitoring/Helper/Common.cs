@@ -16,13 +16,12 @@ namespace BackToWorkFunctions.Helper
 {
     public class Common
     {
-        //check if email address is valid 
         public static bool IsValidEmail(string email)
         {
             return Regex.IsMatch(email, @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
         }
 
-        public static async Task<bool> SendEmail(string DestEmail, string SrcEmail, string AuthorName, string ReceipientName, string AssessmentLink, string SendGridAPIKey)
+        public static async void SendEmail(string DestEmail, string SrcEmail, string AuthorName, string ReceipientName, string AssessmentLink, string SendGridAPIKey)
         {
             try
             {
@@ -37,16 +36,14 @@ namespace BackToWorkFunctions.Helper
 
                 var EmailResponse = await EmailClient.SendEmailAsync(EmailMessage);
                 Console.Write(EmailResponse);
-                return true;
             }
             catch (Exception ex)
             {
                 Console.Write(ex.Message);
-                return false;
             }
         }
 
-        public static async Task<bool> SendEmailWithQRCode(string DestEmail, string SrcEmail, string AuthorName, string ReceipientName, string imageBase64Encoding, string SendGridAPIKey)
+        public static async void SendEmailWithQRCode(string DestEmail, string SrcEmail, string AuthorName, string ReceipientName, string imageBase64Encoding, string SendGridAPIKey)
         {
             try
             {
@@ -62,16 +59,14 @@ namespace BackToWorkFunctions.Helper
 
                 var EmailResponse = await EmailClient.SendEmailAsync(EmailMessage);
                 Console.Write(EmailResponse);
-                return true;
             }
             catch (Exception ex)
             {
                 Console.Write(ex.Message);
-                return false;
             }
         }
 
-        public static async Task<bool> GenerateQRCodeAsync(string GUID)
+        public static void GenerateQRCodeAsync(string GUID)
         {
             try
             {
@@ -90,13 +85,11 @@ namespace BackToWorkFunctions.Helper
 
                 Console.WriteLine("QR Code generated");
                 string resultQRBase64 = Convert.ToBase64String(resultQR);
-
-                return true;
+                //Call Send Email with QR Code
             }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return false;
             }
         }
     }

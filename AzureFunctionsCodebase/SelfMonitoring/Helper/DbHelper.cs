@@ -53,8 +53,7 @@ namespace BackToWorkFunctions.Helper
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
-                        return false;
+                        throw new Exception(ex.ToString());
                     }
                     break;
 
@@ -80,8 +79,7 @@ namespace BackToWorkFunctions.Helper
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
-                        return false;
+                        throw new Exception(ex.ToString());
                     }
                     break;
 
@@ -106,8 +104,7 @@ namespace BackToWorkFunctions.Helper
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
-                        return false;
+                        throw new Exception(ex.ToString());
                     }
                     break;
 
@@ -149,8 +146,7 @@ namespace BackToWorkFunctions.Helper
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
-                        return false;
+                        throw new Exception(ex.ToString());
                     }
                     break;
             }            
@@ -210,8 +206,7 @@ namespace BackToWorkFunctions.Helper
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
-                        return (T)Convert.ChangeType(userInfo, typeof(T));
+                        throw new Exception(ex.ToString());
                     }           
 
                 case Constants.getLabTestInfo:
@@ -248,8 +243,7 @@ namespace BackToWorkFunctions.Helper
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
-                        return (T)Convert.ChangeType(lstlabTestInfo, typeof(T));
+                        throw new Exception(ex.ToString());
                     }
 
                 case Constants.getRequestStatus:
@@ -284,8 +278,7 @@ namespace BackToWorkFunctions.Helper
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
-                        return (T)Convert.ChangeType(lstrequestStatus, typeof(T));
+                        throw new Exception(ex.ToString());
                     }
 
                 default:
@@ -338,8 +331,7 @@ namespace BackToWorkFunctions.Helper
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
-                        return (T)Convert.ChangeType(lstsymptomsInfo, typeof(T));
+                        throw new Exception(ex.ToString());
                     }
             }
         }
@@ -371,8 +363,7 @@ namespace BackToWorkFunctions.Helper
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return false;
+                throw new Exception(ex.ToString());
             }
         }
 
@@ -405,8 +396,7 @@ namespace BackToWorkFunctions.Helper
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return false;
+                throw new Exception(ex.ToString());
             }
         }
     }

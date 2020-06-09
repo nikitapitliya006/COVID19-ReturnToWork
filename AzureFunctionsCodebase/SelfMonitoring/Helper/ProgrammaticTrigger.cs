@@ -55,7 +55,7 @@ namespace BackToWorkFunctions.Helper
             }
             catch (Exception ex)
             {
-                throw new HttpRequestException(ex.Message);
+                throw new Exception(ex.ToString());
             }
         }
 

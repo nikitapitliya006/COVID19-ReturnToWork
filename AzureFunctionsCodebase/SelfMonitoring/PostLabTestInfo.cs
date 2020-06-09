@@ -43,7 +43,7 @@ namespace BackToWorkFunctions
             catch (Exception ex)
             {
                 log.LogInformation(ex.Message);
-                return null;
+                throw new Exception(ex.ToString());
             }            
         }
     }

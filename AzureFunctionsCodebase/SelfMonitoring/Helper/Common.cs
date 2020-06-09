@@ -64,7 +64,7 @@ namespace BackToWorkFunctions.Helper
             }
             catch (Exception ex)
             {
-                throw new Exception("SendEmail with QR Code via SendGrid exception", ex.InnerException);
+                throw new Exception(ex.ToString());
             }
         }
 
@@ -89,10 +89,8 @@ namespace BackToWorkFunctions.Helper
             }
             catch(Exception ex)
             {
-                throw new Exception("Generate QR Code exception", ex.InnerException);
+                throw new Exception(ex.ToString());
             }
         }
-
-        
     }
 }

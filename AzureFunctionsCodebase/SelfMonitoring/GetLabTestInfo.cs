@@ -50,7 +50,7 @@ namespace BackToWorkFunctions
             catch(System.Exception ex)
             {
                 log.LogInformation(ex.Message);
-                return null;
+                throw new Exception(ex.ToString());
             }
         }
     }

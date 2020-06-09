@@ -13,7 +13,7 @@ namespace BackToWorkFunctions.Helper
         public static bool PostDataAsync<T>(T model, string ops)
         {
             var sqlConStr = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
-            string sqlStr = null;
+            
             switch (ops)
             {
                 case Constants.postUserInfo:
@@ -32,7 +32,7 @@ namespace BackToWorkFunctions.Helper
                             cmd.Parameters.Add("@LastName", SqlDbType.VarChar).Value = typeof(T).GetProperty("LastName").GetValue(model);
                             cmd.Parameters.Add("@FullName", SqlDbType.VarChar).Value = typeof(T).GetProperty("FullName").GetValue(model);
                             cmd.Parameters.Add("@Role", SqlDbType.VarChar).Value = typeof(T).GetProperty("Role").GetValue(model);
-                            cmd.Parameters.Add("@YearOfBirth", SqlDbType.VarChar).Value = typeof(T).GetProperty("YearOfBirth").GetValue(model);
+                            cmd.Parameters.Add("@YearOfBirth", SqlDbType.Int).Value = typeof(T).GetProperty("YearOfBirth").GetValue(model);
                             cmd.Parameters.Add("@MobileNumber", SqlDbType.VarChar).Value = typeof(T).GetProperty("MobileNumber").GetValue(model);
                             cmd.Parameters.Add("@EmailAddress", SqlDbType.VarChar).Value = typeof(T).GetProperty("EmailAddress").GetValue(model);
                             cmd.Parameters.Add("@StreetAddress1", SqlDbType.VarChar).Value = typeof(T).GetProperty("StreetAddress1").GetValue(model);

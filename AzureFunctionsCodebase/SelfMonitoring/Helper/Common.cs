@@ -11,9 +11,11 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Net.Mime;
+using System.Reflection;
 
 namespace BackToWorkFunctions.Helper
 {
+   
     public class Common
     {
         public static bool IsValidEmail(string email)
@@ -21,7 +23,7 @@ namespace BackToWorkFunctions.Helper
             return Regex.IsMatch(email, @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
         }
 
-        public static async void SendEmail(string DestEmail, string SrcEmail, string AuthorName, string ReceipientName, string AssessmentLink, string SendGridAPIKey)
+        public static void SendEmail(string DestEmail, string SrcEmail, string AuthorName, string ReceipientName, string AssessmentLink, string SendGridAPIKey)
         {
             try
             {
@@ -34,16 +36,16 @@ namespace BackToWorkFunctions.Helper
                 var MessageContent = "<p>Please take today's screening assessment before going to work, Thank you! \n\n <a href='" + AssessmentLink + "'>COVID-19 Return to Work Assessment</a> </p>";
                 EmailMessage.AddContent(MimeType.Html, MessageContent);
 
-                var EmailResponse = await EmailClient.SendEmailAsync(EmailMessage);
-                Console.Write(EmailResponse);
+                var EmailResponse = EmailClient.SendEmailAsync(EmailMessage);
+                
             }
             catch (Exception ex)
             {
-                Console.Write(ex.Message);
+                throw new Exception(ex.ToString());
             }
         }
 
-        public static async void SendEmailWithQRCode(string DestEmail, string SrcEmail, string AuthorName, string ReceipientName, string imageBase64Encoding, string SendGridAPIKey)
+        public static void SendEmailWithQRCode(string DestEmail, string SrcEmail, string AuthorName, string RecipientName, string imageBase64Encoding, string SendGridAPIKey)
         {
             try
             {
@@ -57,16 +59,16 @@ namespace BackToWorkFunctions.Helper
                 EmailMessage.AddAttachment("qrcode.png", imageBase64Encoding);
                 EmailMessage.AddContent(MimeType.Html, MessageContent);
 
-                var EmailResponse = await EmailClient.SendEmailAsync(EmailMessage);
+                var EmailResponse = EmailClient.SendEmailAsync(EmailMessage);
                 Console.Write(EmailResponse);
             }
             catch (Exception ex)
             {
-                Console.Write(ex.Message);
+                throw new Exception("SendEmail with QR Code via SendGrid exception", ex.InnerException);
             }
         }
 
-        public static void GenerateQRCodeAsync(string GUID)
+        public static void GenerateQRCode(string GUID)
         {
             try
             {
@@ -82,15 +84,15 @@ namespace BackToWorkFunctions.Helper
                     qrCodeImage.Save(stream, ImageFormat.Png);
                     resultQR = stream.ToArray();
                 }
-
-                Console.WriteLine("QR Code generated");
                 string resultQRBase64 = Convert.ToBase64String(resultQR);
-                //Call Send Email with QR Code
+
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                throw new Exception("Generate QR Code exception", ex.InnerException);
             }
         }
+
+        
     }
 }

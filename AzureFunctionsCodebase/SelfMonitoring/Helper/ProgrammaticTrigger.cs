@@ -6,6 +6,8 @@ using System.Net.Http.Headers;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using BackToWorkFunctions.Model;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace BackToWorkFunctions.Helper
 {
@@ -14,44 +16,47 @@ namespace BackToWorkFunctions.Helper
         
         public static void GetTeamsAddressFromSqlAndPostTrigger()
         {
-            List<TeamsAddressQuarantineInfo> teamsAddressQuarantineInfoCollector = new List<TeamsAddressQuarantineInfo>();
-            bool result = DbHelper.GetTeamsAddress(teamsAddressQuarantineInfoCollector);
             
-            foreach (var element in teamsAddressQuarantineInfoCollector)
-            {
-                PostTriggerToAllRegisteredTeamsClients(element.TeamsAddress);
-            }
         }
 
-        public static async void PostTriggerToAllRegisteredTeamsClients(string teamsAddress)
+        public static async Task<bool> PostTriggerToAllRegisteredTeamsClients(string teamsAddress)
         {
-            string URL = Environment.GetEnvironmentVariable("Healthbot_Trigger_Call", EnvironmentVariableTarget.Process);
-            string token = "";
-
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri(URL);
-
-            //Add an Authorization Bearer token (jwt token)
-            string partial_token = GetJwtToken();
-            token = "Bearer " + partial_token;
-            client.DefaultRequestHeaders.Add("Authorization", token);
-
-            // Add an Accept header for JSON format.
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            //Add body parameter
-            string scenarioId = Environment.GetEnvironmentVariable("Healthbot_ScenarioId", EnvironmentVariableTarget.Process);
-            var payload = "{\"address\":" + teamsAddress + ",\"scenario\": \"/scenarios/" + scenarioId + "\"}";
-            HttpContent content = new StringContent(payload, Encoding.UTF8, "application/json");
-
-            // List data response.
-            HttpResponseMessage response = await client.PostAsync(URL, content);
-
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                Console.WriteLine("{0})", (int)response.StatusCode);
+
+                string URL = Environment.GetEnvironmentVariable("Healthbot_Trigger_Call", EnvironmentVariableTarget.Process);
+                string token = "";
+
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(URL);
+
+                //Add an Authorization Bearer token (jwt token)
+                string partial_token = GetJwtToken();
+                token = "Bearer " + partial_token;
+                client.DefaultRequestHeaders.Add("Authorization", token);
+
+                // Add an Accept header for JSON format.
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                //Add body parameter
+                string scenarioId = Environment.GetEnvironmentVariable("Healthbot_ScenarioId", EnvironmentVariableTarget.Process);
+                var payload = "{\"address\":" + teamsAddress + ",\"scenario\": \"/scenarios/" + scenarioId + "\"}";
+                HttpContent content = new StringContent(payload, Encoding.UTF8, "application/json");
+
+                // List data response.
+                HttpResponseMessage response = await client.PostAsync(URL, content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("{0})", (int)response.StatusCode);
+                }
+                client.Dispose();
+                return true;
             }
-            client.Dispose();
+            catch (Exception ex)
+            {
+                throw new HttpRequestException(ex.Message);
+            }
         }
 
         public static string GetJwtToken()

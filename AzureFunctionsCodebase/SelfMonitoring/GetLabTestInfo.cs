@@ -25,22 +25,18 @@ namespace BackToWorkFunctions
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "GetLabTestInfo/{UserId}")] HttpRequest req, string UserId,
             ILogger log, ExecutionContext context)
         {
-            if (UserId == null)
+            if (String.IsNullOrEmpty(UserId))
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
 
             try
             {
-
                 List<LabTestInfo> lstlabTestInfo = await DbHelper.GetDataAsync<List<LabTestInfo>>(Constants.getLabTestInfo, UserId);
-
                 if (lstlabTestInfo == null)
                 {
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
-
-                log.LogInformation(JsonConvert.SerializeObject(lstlabTestInfo));
 
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {

@@ -9,58 +9,37 @@ namespace BackToWorkFunctions.Helper
 {
     public class DbHelper
     {
-        //for data insertion write condition to check if data for that user exist or not
         public static bool PostDataAsync<T>(T model, string ops)
         {
-            var sqlConStr = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
-            
-            switch (ops)
+            try
             {
-                case Constants.postUserInfo:
-                    try
-                    {
-                        using (var conn = new SqlConnection(sqlConStr))
+                var sqlConnectionString = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
+
+                switch (ops)
+                {
+                    case Constants.postUserInfo:
+                        
+                        using (var conn = new SqlConnection(sqlConnectionString))
                         {
                             string spName = @"dbo.[PostUserInfo]";
                             SqlCommand cmd = new SqlCommand(spName, conn);
                             cmd.CommandType = CommandType.StoredProcedure;
 
                             cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = typeof(T).GetProperty("UserId").GetValue(model);
-                            cmd.Parameters.Add("@UserGUID", SqlDbType.VarChar).Value = typeof(T).GetProperty("UserGUID").GetValue(model);
-                            cmd.Parameters.Add("@Password", SqlDbType.VarChar).Value = typeof(T).GetProperty("Password").GetValue(model);
-                            cmd.Parameters.Add("@FirstName", SqlDbType.VarChar).Value = typeof(T).GetProperty("FirstName").GetValue(model);
-                            cmd.Parameters.Add("@LastName", SqlDbType.VarChar).Value = typeof(T).GetProperty("LastName").GetValue(model);
                             cmd.Parameters.Add("@FullName", SqlDbType.VarChar).Value = typeof(T).GetProperty("FullName").GetValue(model);
-                            cmd.Parameters.Add("@Role", SqlDbType.VarChar).Value = typeof(T).GetProperty("Role").GetValue(model);
                             cmd.Parameters.Add("@YearOfBirth", SqlDbType.Int).Value = typeof(T).GetProperty("YearOfBirth").GetValue(model);
-                            cmd.Parameters.Add("@MobileNumber", SqlDbType.VarChar).Value = typeof(T).GetProperty("MobileNumber").GetValue(model);
                             cmd.Parameters.Add("@EmailAddress", SqlDbType.VarChar).Value = typeof(T).GetProperty("EmailAddress").GetValue(model);
-                            cmd.Parameters.Add("@StreetAddress1", SqlDbType.VarChar).Value = typeof(T).GetProperty("StreetAddress1").GetValue(model);
-                            cmd.Parameters.Add("@StreetAddress2", SqlDbType.VarChar).Value = typeof(T).GetProperty("StreetAddress2").GetValue(model);
-                            cmd.Parameters.Add("@City", SqlDbType.VarChar).Value = typeof(T).GetProperty("City").GetValue(model);
-                            cmd.Parameters.Add("@State", SqlDbType.VarChar).Value = typeof(T).GetProperty("State").GetValue(model);
-                            cmd.Parameters.Add("@Country", SqlDbType.VarChar).Value = typeof(T).GetProperty("Country").GetValue(model);
-                            cmd.Parameters.Add("@ZipCode", SqlDbType.VarChar).Value = typeof(T).GetProperty("ZipCode").GetValue(model);
-                            cmd.Parameters.Add("@TeamsAddress", SqlDbType.VarChar).Value = typeof(T).GetProperty("TeamsAddress").GetValue(model);
-                            cmd.Parameters.Add("@TwilioAddress", SqlDbType.VarChar).Value = typeof(T).GetProperty("TwilioAddress").GetValue(model);
-                            cmd.Parameters.Add("@RequestBTWEmail", SqlDbType.VarChar).Value = typeof(T).GetProperty("RequestBTWEmail").GetValue(model);
-                            cmd.Parameters.Add("@RequestBTWMobile", SqlDbType.VarChar).Value = typeof(T).GetProperty("RequestBTWMobile").GetValue(model);
 
                             conn.Open();
                             cmd.ExecuteNonQuery();
-                            conn.Close();                            
+                            conn.Close();
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception(ex.ToString());
-                    }
+                        
                     break;
 
-                case Constants.postLabTestInfo:
-                    try
-                    {
-                        using (var conn = new SqlConnection(sqlConStr))
+                    case Constants.postLabTestInfo:
+                        
+                        using (var conn = new SqlConnection(sqlConnectionString))
                         {
                             string spName = @"dbo.[PostLabTestInfo]";
                             SqlCommand cmd = new SqlCommand(spName, conn);
@@ -76,17 +55,12 @@ namespace BackToWorkFunctions.Helper
                             cmd.ExecuteNonQuery();
                             conn.Close();
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception(ex.ToString());
-                    }
+                        
                     break;
 
-                case Constants.postRequestStatus:
-                    try
-                    {
-                        using (var conn = new SqlConnection(sqlConStr))
+                    case Constants.postRequestStatus:
+                        
+                        using (var conn = new SqlConnection(sqlConnectionString))
                         {
                             string spName = @"dbo.[PostRequestStatus]";
                             SqlCommand cmd = new SqlCommand(spName, conn);
@@ -101,17 +75,12 @@ namespace BackToWorkFunctions.Helper
                             cmd.ExecuteNonQuery();
                             conn.Close();
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception(ex.ToString());
-                    }
+                        
                     break;
 
-                case Constants.postSymptomsInfo:
-                    try
-                    {
-                        using (var conn = new SqlConnection(sqlConStr))
+                    case Constants.postSymptomsInfo:
+                        
+                        using (var conn = new SqlConnection(sqlConnectionString))
                         {
                             string spName = @"dbo.[PostSymptomsInfo]";
                             SqlCommand cmd = new SqlCommand(spName, conn);
@@ -143,15 +112,16 @@ namespace BackToWorkFunctions.Helper
                             cmd.ExecuteNonQuery();
                             conn.Close();
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception(ex.ToString());
-                    }
+                       
                     break;
-            }            
-            return true;
-        }        
+                }
+                return true;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
 
         public static async Task<T> GetDataAsync<T>(string ops, string paramString)
         {
@@ -178,25 +148,9 @@ namespace BackToWorkFunctions.Helper
                                 while (reader.Read())
                                 {
                                     userInfo.UserId = reader["UserId"].ToString();
-                                    userInfo.UserGUID = reader["UserGUID"].ToString();
-                                    userInfo.Password = reader["Password"].ToString();
-                                    userInfo.FirstName = reader["FirstName"].ToString();
-                                    userInfo.LastName = reader["LastName"].ToString();
                                     userInfo.FullName = reader["FullName"].ToString();
-                                    userInfo.Role = reader["Role"].ToString();
                                     userInfo.YearOfBirth = (int)reader["YearOfBirth"];
-                                    userInfo.MobileNumber = reader["MobileNumber"].ToString();
                                     userInfo.EmailAddress = reader["EmailAddress"].ToString();
-                                    userInfo.StreetAddress1 = reader["StreetAddress1"].ToString();
-                                    userInfo.StreetAddress2 = reader["StreetAddress2"].ToString();
-                                    userInfo.City = reader["City"].ToString();
-                                    userInfo.State = reader["State"].ToString();
-                                    userInfo.Country = reader["Country"].ToString();
-                                    userInfo.ZipCode = reader["ZipCode"].ToString();
-                                    userInfo.TeamsAddress = reader["TeamsAddress"].ToString();
-                                    userInfo.TwilioAddress = reader["TwilioAddress"].ToString();
-                                    userInfo.RequestBTWEmail = reader["RequestBTWEmail"].ToString();
-                                    userInfo.RequestBTWMobile = reader["RequestBTWMobile"].ToString();
                                 }
                             }
                             reader.Close();

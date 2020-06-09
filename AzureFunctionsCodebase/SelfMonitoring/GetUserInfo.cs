@@ -12,6 +12,7 @@ using System.Data.SqlClient;
 using System.Text;
 using BackToWorkFunctions.Helper;
 using Microsoft.Extensions.Configuration;
+using System.Drawing;
 
 namespace BackToWorkFunctions
 {
@@ -22,7 +23,7 @@ namespace BackToWorkFunctions
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "GetUserInfo/{UserId}")] HttpRequest req, string UserId,
             ILogger log, ExecutionContext context)
         {
-            if (UserId == null)
+            if (String.IsNullOrEmpty(UserId))
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
@@ -30,8 +31,10 @@ namespace BackToWorkFunctions
             try
             {
                 UserInfo userInfo = await DbHelper.GetDataAsync<UserInfo>(Constants.getUserInfo, UserId);
-
-                log.LogInformation(JsonConvert.SerializeObject(userInfo));
+                if (userInfo == null)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.NotFound);
+                }
 
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {

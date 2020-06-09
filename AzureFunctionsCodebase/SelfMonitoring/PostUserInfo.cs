@@ -23,6 +23,11 @@ namespace BackToWorkFunctions
         {
             try
             {
+                if(req == null)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+
                 UserInfo userInfo = await req.Content.ReadAsAsync<UserInfo>();
                 if (userInfo == null)
                 {
@@ -31,8 +36,7 @@ namespace BackToWorkFunctions
                 bool dataRecorded = DbHelper.PostDataAsync(userInfo, Constants.postUserInfo);
 
                 if (dataRecorded)
-                {
-                    log.LogInformation("Data recorded");
+                {                    
                     return new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -40,10 +44,10 @@ namespace BackToWorkFunctions
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
             }
-            catch(System.Exception ex)
+            catch(Exception ex)
             {
                 log.LogInformation(ex.Message);
-                return null;
+                throw new Exception(ex.ToString());
             }
         }
     }

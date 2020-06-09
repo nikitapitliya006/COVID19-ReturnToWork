@@ -23,8 +23,7 @@ namespace BackToWorkFunctions
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "GetSymptomsInfo/{UserId}")] HttpRequest req, string UserId,
             ILogger log, ExecutionContext context)
         {
-            
-            if (UserId == null)
+            if (String.IsNullOrEmpty(UserId))
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
@@ -36,8 +35,7 @@ namespace BackToWorkFunctions
                 {
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
-                log.LogInformation(JsonConvert.SerializeObject(lstsymptomsInfo));
-
+                
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
                     Content = new StringContent(JsonConvert.SerializeObject(lstsymptomsInfo), Encoding.UTF8, "application/json")

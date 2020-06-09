@@ -14,8 +14,7 @@ using System.Net.Mime;
 using System.Reflection;
 
 namespace BackToWorkFunctions.Helper
-{
-   
+{   
     public class Common
     {
         public static bool IsValidEmail(string email)

@@ -22,28 +22,29 @@ namespace BackToWorkFunctions
         {
             try
             {
+                if (req == null)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
                 SymptomsInfo symptomsInfo = await req.Content.ReadAsAsync<SymptomsInfo>();
                 if (symptomsInfo == null)
                 {
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
                 bool dataRecorded = DbHelper.PostDataAsync(symptomsInfo, Constants.postSymptomsInfo);
-
-                //bool qrcodeGenerated = Common.GenerateQRCode(symptomsInfo.GUID);
                 if (dataRecorded)
                 {
-                    log.LogInformation("Data recorded");
                     return new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
                 {
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
-            }
-            catch(System.Exception ex)
+            }            
+            catch (Exception ex)
             {
                 log.LogInformation(ex.Message);
-                return null;
+                throw new Exception(ex.ToString());
             }
         }
     }

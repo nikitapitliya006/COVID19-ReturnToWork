@@ -22,6 +22,11 @@ namespace BackToWorkFunctions
         {
             try
             {
+                if (req == null)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+
                 LabTestInfo labTestInfo = await req.Content.ReadAsAsync<LabTestInfo>();
                 if (labTestInfo == null)
                 {
@@ -32,7 +37,6 @@ namespace BackToWorkFunctions
 
                 if (dataRecorded)
                 {
-                    log.LogInformation("Data recorded");
                     return new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else

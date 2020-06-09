@@ -22,8 +22,8 @@ namespace BackToWorkFunctions
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "GetRequestStatus/{UserId}")] HttpRequest req, string UserId,
             ILogger log, ExecutionContext context)
-        {           
-            if (UserId == null)
+        {
+            if (String.IsNullOrEmpty(UserId))
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
@@ -35,7 +35,6 @@ namespace BackToWorkFunctions
                 {
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
-                log.LogInformation(JsonConvert.SerializeObject(lstrequestStatus));
 
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {

@@ -5,6 +5,7 @@ using BackToWorkFunctions.Helper;
 using BackToWorkFunctions.Model;
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace BackToWorkFunctions
 {
@@ -12,17 +13,29 @@ namespace BackToWorkFunctions
     {
         [Disable]
         [FunctionName("TriggerTeamsNotification")]
-        public static void Run([TimerTrigger("0 8 0 * * *")]TimerInfo myTimer, ILogger log)
+        public static async Task Run([TimerTrigger("0 8 0 * * *")]TimerInfo myTimer, ILogger log)
         {
-            List<TeamsAddressQuarantineInfo> teamsAddressQuarantineInfoCollector = new List<TeamsAddressQuarantineInfo>();
-            bool userTeamsAddressReceived = DbHelper.GetTeamsAddress(teamsAddressQuarantineInfoCollector);
-            if (userTeamsAddressReceived)
+            try
             {
-                foreach (var element in teamsAddressQuarantineInfoCollector)
+                List<TeamsAddressQuarantineInfo> teamsAddressQuarantineInfoCollector = new List<TeamsAddressQuarantineInfo>();
+                bool userTeamsAddressReceived = DbHelper.GetTeamsAddress(teamsAddressQuarantineInfoCollector);
+                if (userTeamsAddressReceived)
                 {
-                    ProgrammaticTrigger.PostTriggerToAllRegisteredTeamsClients(element.TeamsAddress);
+                    foreach (var element in teamsAddressQuarantineInfoCollector)
+                    {
+                        await ProgrammaticTrigger.PostTriggerToAllRegisteredTeamsClients(element.TeamsAddress);
+                    }
                 }
-            }            
+                else
+                {
+                    log.LogInformation("Error executing TriggerTeamsNotification at DbHelper.GetTeamsAddress()\n");
+                }
+            }
+            catch(Exception ex)
+            {
+                log.LogInformation(ex.Message);
+                throw new Exception(ex.ToString());
+            }
         }        
     }
 }

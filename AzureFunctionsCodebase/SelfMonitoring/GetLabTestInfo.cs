@@ -43,7 +43,7 @@ namespace BackToWorkFunctions
                     Content = new StringContent(JsonConvert.SerializeObject(labTestInfo), Encoding.UTF8, "application/json")
                 };
             }
-            catch(System.Exception ex)
+            catch(Exception ex)
             {
                 log.LogInformation(ex.Message);
                 throw new Exception(ex.ToString());

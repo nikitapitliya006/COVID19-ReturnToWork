@@ -12,6 +12,7 @@ namespace BackToWorkFunctions.Helper
     {
         public static bool PostDataAsync<T>(T model, string ops)
         {
+            string errorMsg = "";
             try
             {
                 string sqlConnectionString = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
@@ -35,11 +36,10 @@ namespace BackToWorkFunctions.Helper
                                         
                                     cmd.ExecuteNonQuery();
                                 }
-                            }                        
-
+                            }                       
                             break;
                         case Constants.postLabTestInfo:
-                              using (SqlConnection connection = new SqlConnection(sqlConnectionString))
+                            using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                                 {
                                     connection.Open();
                                     string spName = @"dbo.[PostLabTestInfo]";
@@ -55,10 +55,9 @@ namespace BackToWorkFunctions.Helper
                                         cmd.ExecuteNonQuery();
                                     }
                                 }
-                            
                             break;
                         case Constants.postRequestStatus:                           
-                                using (SqlConnection connection = new SqlConnection(sqlConnectionString))
+                             using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                                 {
                                     connection.Open();
                                     string spName = @"dbo.[PostRequestStatus]";
@@ -72,11 +71,9 @@ namespace BackToWorkFunctions.Helper
                                         cmd.ExecuteNonQuery();
                                     }
                                 }
-                            
                             break;
-                        case Constants.postSymptomsInfo:
-                            
-                                using (SqlConnection connection = new SqlConnection(sqlConnectionString))
+                        case Constants.postSymptomsInfo:                            
+                            using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                                 {
                                     connection.Open();
                                     string spName = @"dbo.[PostSymptomsInfo]";
@@ -107,14 +104,18 @@ namespace BackToWorkFunctions.Helper
                                         cmd.ExecuteNonQuery();
                                     }
                                 }
-                            
                             break;
+                        default:
+                            errorMsg = "Error in writing data to database";
+                            throw new Exception(errorMsg);
                     }
                     return true;
                 }
-                throw new ArgumentNullException("SqlConnectionString not found in Configuration");
-            }            
-            catch(SqlException sqlEx)
+                
+                errorMsg = "SqlConnectionString not found in Configuration";
+                throw new ArgumentNullException(errorMsg);
+            }
+            catch (SqlException sqlEx)
             {
                 throw new Exception(sqlEx.Message);
             }
@@ -125,19 +126,20 @@ namespace BackToWorkFunctions.Helper
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }            
+            }
         }
 
         public static async Task<T> GetDataAsync<T>(string ops, string paramString)
         {
+            string errorMsg = "";
             try
             {
-                var sqlConnectionString = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);                
-                switch (ops)
+                string sqlConnectionString = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
+                if (!String.IsNullOrEmpty(sqlConnectionString))
                 {
-                    case Constants.getUserInfo:
-                        try
-                        {
+                    switch (ops)
+                    {
+                        case Constants.getUserInfo:                            
                             UserInfo userInfo = new UserInfo();
                             using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                             {
@@ -163,21 +165,14 @@ namespace BackToWorkFunctions.Helper
                                     }
                                 }
                             }
-                        }
-                        catch (SqlException sqlEx)
-                        {
-                            throw new Exception(sqlEx.Message);
-                        }
-                    case Constants.getLabTestInfo:
-                        try
-                        {
+                        case Constants.getLabTestInfo:                            
                             LabTestInfo labTestInfo = new LabTestInfo();
                             using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                             {
                                 connection.Open();
                                 string spName = @"dbo.[GetLabTestInfo]";
                                 using (SqlCommand cmd = new SqlCommand(spName, connection))
-                                { 
+                                {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = paramString;
                                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -185,26 +180,19 @@ namespace BackToWorkFunctions.Helper
                                         if (reader != null)
                                         {
                                             while (reader.Read())
-                                            {                                                
+                                            {
                                                 labTestInfo.UserId = reader["UserId"].ToString();
                                                 labTestInfo.DateOfEntry = reader["DateOfEntry"].ToString();
                                                 labTestInfo.TestType = reader["TestType"].ToString();
                                                 labTestInfo.TestDate = reader["TestDate"].ToString();
-                                                labTestInfo.TestResult = reader["TestResult"].ToString();                                                
+                                                labTestInfo.TestResult = reader["TestResult"].ToString();
                                             }
                                         }
                                         return (T)Convert.ChangeType(labTestInfo, typeof(T));
                                     }
                                 }
                             }
-                        }
-                        catch (SqlException sqlEx)
-                        {
-                            throw new Exception(sqlEx.Message);
-                        }
-
-                    case Constants.getRequestStatus:
-                        try { 
+                        case Constants.getRequestStatus:                            
                             RequestStatus requestStatus = new RequestStatus();
                             using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                             {
@@ -219,25 +207,17 @@ namespace BackToWorkFunctions.Helper
                                         if (reader != null)
                                         {
                                             while (reader.Read())
-                                            {                                                
+                                            {
                                                 requestStatus.UserId = reader["UserId"].ToString();
                                                 requestStatus.DateOfEntry = reader["DateOfEntry"].ToString();
-                                                requestStatus.ReturnRequestStatus = reader["ReturnRequestStatus"].ToString();                                                
+                                                requestStatus.ReturnRequestStatus = reader["ReturnRequestStatus"].ToString();
                                             }
                                         }
                                         return (T)Convert.ChangeType(requestStatus, typeof(T));
                                     }
                                 }
                             }
-                        }
-                        catch (SqlException sqlEx)
-                        {
-                            throw new Exception(sqlEx.Message);
-                        }
-
-                    default:
-                        try
-                        {
+                        case Constants.getSymptomsInfo:                            
                             SymptomsInfo symptomsInfo = new SymptomsInfo();
                             using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                             {
@@ -253,7 +233,7 @@ namespace BackToWorkFunctions.Helper
                                         if (reader != null)
                                         {
                                             while (reader.Read())
-                                            {                                                
+                                            {
                                                 symptomsInfo.UserId = reader["UserId"].ToString();
                                                 symptomsInfo.DateOfEntry = reader["DateOfEntry"].ToString();
                                                 symptomsInfo.UserIsExposed = DBNull.Value.Equals(reader["UserIsExposed"]) ? false : (bool)reader["UserIsExposed"];
@@ -274,23 +254,24 @@ namespace BackToWorkFunctions.Helper
                                                 symptomsInfo.UserIsSymptomatic = DBNull.Value.Equals(reader["UserIsSymptomatic"]) ? false : (bool)reader["UserIsSymptomatic"];
                                                 symptomsInfo.ClearToWorkToday = DBNull.Value.Equals(reader["ClearToWorkToday"]) ? false : (bool)reader["ClearToWorkToday"];
                                                 symptomsInfo.GUID = reader["GUID"].ToString();
-                                                
+
                                             }
                                         }
                                         return (T)Convert.ChangeType(symptomsInfo, typeof(T));
                                     }
                                 }
                             }
-                        }                        
-                        catch (SqlException sqlEx)
-                        {
-                            throw new Exception(sqlEx.Message);
-                        }
-                }                
+                        default:
+                            errorMsg = "Error in getting data from database";
+                            throw new ArgumentNullException(errorMsg);                            
+                    }
+                }
+                errorMsg = "SqlConnectionString not found in Configuration";
+                throw new ArgumentNullException(errorMsg);
             }
             catch (Exception ex)
             {
-                throw new ArgumentNullException("SqlConnectionString not found in Configuration", ex.Message);
+                throw new Exception(ex.Message);
             }
 
         }
@@ -331,7 +312,7 @@ namespace BackToWorkFunctions.Helper
             }
             catch (Exception ex)
             {
-                throw new ArgumentNullException("SqlConnectionString not found in Configuration", ex.Message);
+                throw new Exception(ex.Message);
             }
         }
 

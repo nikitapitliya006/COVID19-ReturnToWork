@@ -10,13 +10,15 @@ using System.Net;
 using BackToWorkFunctions.Model;
 using System.Data.SqlClient;
 using BackToWorkFunctions.Helper;
+using Microsoft.AspNetCore.Mvc;
+using System.Web.Http;
 
 namespace BackToWorkFunctions
 {
     public static class PostLabTestInfo
     {
         [FunctionName("PostLabTestInfo")]
-        public static async Task<HttpResponseMessage> Run(
+        public static async Task<ActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestMessage req,
             ILogger log)
         {
@@ -24,45 +26,50 @@ namespace BackToWorkFunctions
             {
                 if (req == null)
                 {
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                    return new BadRequestObjectResult("Error: Request object missing");
                 }
 
                 LabTestInfo labTestInfo = await req.Content.ReadAsAsync<LabTestInfo>().ConfigureAwait(false);
                 if (labTestInfo == null || String.IsNullOrEmpty(labTestInfo.UserId) || String.IsNullOrEmpty(labTestInfo.DateOfEntry))
                 {
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                    return new BadRequestObjectResult("Error: Incorrect payload");
                 }
 
                 bool dataRecorded = DbHelper.PostDataAsync(labTestInfo, Constants.postLabTestInfo);
 
                 if (dataRecorded)
                 {
-                    return new HttpResponseMessage(HttpStatusCode.OK);
+                    return new OkObjectResult("Status: OK");
                 }
                 else
                 {
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                    return new BadRequestObjectResult("Error: Writing to database was not complete");
                 }
             }
             catch (HttpRequestException httpEx)
             {
                 log.LogInformation(httpEx.Message);
-                throw new Exception(httpEx.ToString());
+                return new BadRequestObjectResult("Error: Incorrect Request");
             }
             catch (ArgumentNullException argNullEx)
             {
                 log.LogInformation(argNullEx.Message);
-                throw new ArgumentNullException(argNullEx.ToString());
+                return new BadRequestObjectResult("Error: Writing to database was not complete");
             }
             catch (Newtonsoft.Json.JsonSerializationException serializeEx)
             {
                 log.LogInformation(serializeEx.Message);
-                throw new Newtonsoft.Json.JsonSerializationException(serializeEx.ToString());
+                return new BadRequestObjectResult("Error: Incorrect payload");
+            }
+            catch (SqlException sqlEx)
+            {
+                log.LogInformation(sqlEx.Message);
+                return new BadRequestObjectResult("Error: Writing to database was not complete");
             }
             catch (Exception ex)
             {
                 log.LogInformation(ex.Message);
-                throw new Exception(ex.ToString());
+                return new BadRequestObjectResult("Error: Something went wrong, could not save your details");
             }
         }
     }

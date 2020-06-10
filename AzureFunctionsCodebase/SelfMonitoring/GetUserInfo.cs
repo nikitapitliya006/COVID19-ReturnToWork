@@ -21,16 +21,16 @@ namespace BackToWorkFunctions
         [FunctionName("GetUserInfo")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "GetUserInfo/{UserId}")] HttpRequest req, string UserId,
-            ILogger log, ExecutionContext context)
+            ILogger log)
         {
-            if (String.IsNullOrEmpty(UserId))
+            if (req == null || String.IsNullOrEmpty(UserId))
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
 
             try
             {
-                UserInfo userInfo = await DbHelper.GetDataAsync<UserInfo>(Constants.getUserInfo, UserId);
+                UserInfo userInfo = await DbHelper.GetDataAsync<UserInfo>(Constants.getUserInfo, UserId).ConfigureAwait(false);
                 if (userInfo == null)
                 {
                     return new HttpResponseMessage(HttpStatusCode.NotFound);

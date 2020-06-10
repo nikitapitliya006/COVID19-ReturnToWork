@@ -23,16 +23,16 @@ namespace BackToWorkFunctions
         [FunctionName("GetLabTestInfo")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "GetLabTestInfo/{UserId}")] HttpRequest req, string UserId,
-            ILogger log, ExecutionContext context)
+            ILogger log)
         {
-            if (String.IsNullOrEmpty(UserId))
+            if (req == null || String.IsNullOrEmpty(UserId))
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
 
             try
             {
-                LabTestInfo labTestInfo = await DbHelper.GetDataAsync<LabTestInfo>(Constants.getLabTestInfo, UserId);
+                LabTestInfo labTestInfo = await DbHelper.GetDataAsync<LabTestInfo>(Constants.getLabTestInfo, UserId).ConfigureAwait(false);
                 if (labTestInfo == null)
                 {
                     return new HttpResponseMessage(HttpStatusCode.NotFound);

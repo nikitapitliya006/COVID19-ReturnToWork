@@ -4,15 +4,12 @@ using Microsoft.Extensions.Logging;
 using BackToWorkFunctions.Helper;
 using BackToWorkFunctions.Model;
 using System.Collections.Generic;
-using Microsoft.Data.SqlClient;
-using System.Net.Http;
-using System.Web.Http;
 
 namespace BackToWorkFunctions
 {
     public static class TriggerNotification
     {
-        //[Disable]
+        [Disable]
         [FunctionName("TriggerNotification")]
         public static void Run([TimerTrigger("0 8 0 * * *")]TimerInfo myTimer, ILogger log)
         {
@@ -26,8 +23,8 @@ namespace BackToWorkFunctions
                     string assessmentLink = Environment.GetEnvironmentVariable("AssessmentBotLink", EnvironmentVariableTarget.Process);
                     foreach (UserContactInfo userContact in userContactInfoCollector)
                     {
-                        Common.SendEmail(userContact.EmailAddress, "admin@contosohealthsystem.onmicrosoft.com", "Contoso Health System Admin",
-                            userContact.FullName, assessmentLink, sendgridApi);
+                        NotificationHelper.SendEmail(userContact.EmailAddress, "admin@contosohealthsystem.onmicrosoft.com", "Contoso Health System Admin",
+                            assessmentLink, sendgridApi);
                     }
                 }
             }

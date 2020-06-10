@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyModel.Resolution;
 
 namespace BackToWorkFunctions.Helper
 {
-    public class DbHelper
+    public static class DbHelper
     {
         public static bool PostDataAsync<T>(T model, string ops)
         {
@@ -166,7 +166,7 @@ namespace BackToWorkFunctions.Helper
                         }
                         catch (SqlException sqlEx)
                         {
-                            throw new Exception(sqlEx.Message.ToString());
+                            throw new Exception(sqlEx.Message);
                         }
                     case Constants.getLabTestInfo:
                         try
@@ -200,7 +200,7 @@ namespace BackToWorkFunctions.Helper
                         }
                         catch (SqlException sqlEx)
                         {
-                            throw new Exception(sqlEx.Message.ToString());
+                            throw new Exception(sqlEx.Message);
                         }
 
                     case Constants.getRequestStatus:
@@ -232,7 +232,7 @@ namespace BackToWorkFunctions.Helper
                         }
                         catch (SqlException sqlEx)
                         {
-                            throw new Exception(sqlEx.Message.ToString());
+                            throw new Exception(sqlEx.Message);
                         }
 
                     default:
@@ -284,7 +284,7 @@ namespace BackToWorkFunctions.Helper
                         }                        
                         catch (SqlException sqlEx)
                         {
-                            throw new Exception(sqlEx.Message.ToString());
+                            throw new Exception(sqlEx.Message);
                         }
                 }                
             }
@@ -298,7 +298,11 @@ namespace BackToWorkFunctions.Helper
         public static bool GetTeamsAddress(List<TeamsAddressQuarantineInfo> teamsAddressQuarantineInfoCollector)
         {            
             try
-            {
+            {     
+                if(teamsAddressQuarantineInfoCollector == null)
+                {
+                    throw new ArgumentNullException(nameof(teamsAddressQuarantineInfoCollector)); 
+                }
                 var sqlConnectionString = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
                 using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                 {
@@ -322,8 +326,8 @@ namespace BackToWorkFunctions.Helper
                             }
                             return false;
                         }
-                    }
-                }
+                    }                        
+                }                      
             }
             catch (Exception ex)
             {
@@ -335,27 +339,36 @@ namespace BackToWorkFunctions.Helper
         {            
             try
             {
+                if(userContactInfoCollector == null)
+                {
+                    throw new ArgumentNullException(nameof(userContactInfoCollector));
+                }
                 var sqlConnectionString = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
                 using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                 {
                     connection.Open();
-                    SqlCommand cmd = new SqlCommand("GetAllUsersContactInfo", connection);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    if (reader != null)
+                    string spName = @"dbo.[GetAllUsersContactInfo]";
+                    using (SqlCommand cmd = new SqlCommand(spName, connection))
                     {
-                        while (reader.Read())
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            UserContactInfo userContactInfo = new UserContactInfo();
-                            userContactInfo.UserId = reader["UserId"].ToString();
-                            userContactInfo.FullName = reader["FullName"].ToString();
-                            userContactInfo.EmailAddress = reader["EmailAddress"].ToString();
-                            userContactInfo.MobilePhone = reader["MobileNumber"].ToString();
-                            userContactInfoCollector.Add(userContactInfo);
+                            if (reader != null)
+                            {
+                                while (reader.Read())
+                                {
+                                    UserContactInfo userContactInfo = new UserContactInfo();
+                                    userContactInfo.UserId = reader["UserId"].ToString();
+                                    userContactInfo.FullName = reader["FullName"].ToString();
+                                    userContactInfo.EmailAddress = reader["EmailAddress"].ToString();
+                                    userContactInfo.MobilePhone = reader["MobileNumber"].ToString();
+                                    userContactInfoCollector.Add(userContactInfo);
+                                }
+                                return true;
+                            }
+                            return false;
                         }
-                        return true;
                     }
-                    return false;
                 }
             }
             catch (Exception ex)

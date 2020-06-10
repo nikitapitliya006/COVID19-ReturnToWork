@@ -18,20 +18,18 @@ namespace BackToWorkFunctions
         [FunctionName("PostRequestStatus")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestMessage req,
-            ILogger log, ExecutionContext context)
+            ILogger log)
         {
             try
             {
                 if (req == null)
                 {
-                    log.LogInformation("Null HttpRequestMessage");
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
 
-                RequestStatus requestStatus = await req.Content.ReadAsAsync<RequestStatus>();
+                RequestStatus requestStatus = await req.Content.ReadAsAsync<RequestStatus>().ConfigureAwait(false);
                 if (requestStatus == null || String.IsNullOrEmpty(requestStatus.UserId) || String.IsNullOrEmpty(requestStatus.DateOfEntry))
                 {
-                    log.LogInformation("Missing payload information");
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
 
@@ -43,7 +41,6 @@ namespace BackToWorkFunctions
                 }
                 else
                 {
-                    log.LogInformation("Error in writing data to Azure SQL Database");
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
             }
@@ -60,7 +57,6 @@ namespace BackToWorkFunctions
             catch (Newtonsoft.Json.JsonSerializationException serializeEx)
             {
                 log.LogInformation(serializeEx.Message);
-                //var notFoundResponse = new HttpResponseMessage(HttpStatusCode.NotFound);
                 throw new Newtonsoft.Json.JsonSerializationException(serializeEx.ToString());
             }
             catch (System.Exception ex)

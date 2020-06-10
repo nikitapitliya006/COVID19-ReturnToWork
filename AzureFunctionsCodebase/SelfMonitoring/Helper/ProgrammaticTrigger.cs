@@ -12,7 +12,7 @@ using System.Net;
 
 namespace BackToWorkFunctions.Helper
 {
-    public class ProgrammaticTrigger
+    public static class ProgrammaticTrigger
     {        
         public static async Task PostTriggerToAllRegisteredTeamsClients(string teamsAddress)
         {
@@ -25,7 +25,7 @@ namespace BackToWorkFunctions.Helper
 
                 string URL = Environment.GetEnvironmentVariable("Healthbot_Trigger_Call", EnvironmentVariableTarget.Process);
                 HttpClient client = new HttpClient();
-                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 ;
                 client.BaseAddress = new Uri(URL);
 
                 //Add an Authorization Bearer token (jwt token)
@@ -41,12 +41,13 @@ namespace BackToWorkFunctions.Helper
                 string scenarioId = Environment.GetEnvironmentVariable("Healthbot_ScenarioId", EnvironmentVariableTarget.Process);
                 var payload = "{\"address\":" + teamsAddress + ",\"scenario\": \"/scenarios/" + scenarioId + "\"}";
                 HttpContent content = new StringContent(payload, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(URL, content);
+                HttpResponseMessage response = await client.PostAsync(client.BaseAddress, content).ConfigureAwait(false);
 
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception("Error in triggering scenario to Teams client");
                 }
+                content.Dispose();
                 client.Dispose();
 
             }

@@ -23,7 +23,7 @@ namespace BackToWorkFunctions
                 {
                     foreach (var element in teamsAddressQuarantineInfoCollector)
                     {
-                        await ProgrammaticTrigger.PostTriggerToAllRegisteredTeamsClients(element.TeamsAddress);
+                        await ProgrammaticTrigger.PostTriggerToAllRegisteredTeamsClients(element.TeamsAddress).ConfigureAwait(false);
                     }
                 }
                 else

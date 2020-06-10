@@ -18,21 +18,18 @@ namespace BackToWorkFunctions
     {
         [FunctionName("PostUserInfo")]
         public static async Task<HttpResponseMessage> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestMessage req,
-            ILogger log, ExecutionContext context)
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestMessage req, ILogger log)
         {
             try
             {
                 if(req == null)
                 {
-                    log.LogInformation("Null HttpRequestMessage");
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
 
-                UserInfo userInfo = await req.Content.ReadAsAsync<UserInfo>();
+                UserInfo userInfo = await req.Content.ReadAsAsync<UserInfo>().ConfigureAwait(false);
                 if (checkEmptyOrNull(userInfo))
                 {
-                    log.LogInformation("Payload is missing a required parameter");
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
                 bool dataRecorded = DbHelper.PostDataAsync(userInfo, Constants.postUserInfo);
@@ -43,7 +40,6 @@ namespace BackToWorkFunctions
                 }
                 else
                 {
-                    log.LogInformation("Error in writing data to Azure SQL Database");
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
             }
@@ -60,7 +56,6 @@ namespace BackToWorkFunctions
             catch (Newtonsoft.Json.JsonSerializationException serializeEx)
             {
                 log.LogInformation(serializeEx.Message);
-                //var notFoundResponse = new HttpResponseMessage(HttpStatusCode.NotFound);
                 throw new Newtonsoft.Json.JsonSerializationException(serializeEx.ToString());
             }
             catch (Exception ex)
@@ -73,7 +68,7 @@ namespace BackToWorkFunctions
         private static bool checkEmptyOrNull(UserInfo userInfo)
         {
             return userInfo == null || String.IsNullOrEmpty(userInfo.UserId) || String.IsNullOrEmpty(userInfo.FullName)
-                    || String.IsNullOrEmpty(userInfo.YearOfBirth.ToString()) || String.IsNullOrEmpty(userInfo.EmailAddress);
+                    || (userInfo.YearOfBirth == null) || String.IsNullOrEmpty(userInfo.EmailAddress);
         }
 
     }

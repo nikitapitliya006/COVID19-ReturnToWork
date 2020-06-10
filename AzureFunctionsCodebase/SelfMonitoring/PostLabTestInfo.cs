@@ -18,20 +18,18 @@ namespace BackToWorkFunctions
         [FunctionName("PostLabTestInfo")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestMessage req,
-            ILogger log, ExecutionContext context)
+            ILogger log)
         {
             try
             {
                 if (req == null)
                 {
-                    log.LogInformation("Null HttpRequestMessage");
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
 
-                LabTestInfo labTestInfo = await req.Content.ReadAsAsync<LabTestInfo>();
+                LabTestInfo labTestInfo = await req.Content.ReadAsAsync<LabTestInfo>().ConfigureAwait(false);
                 if (labTestInfo == null || String.IsNullOrEmpty(labTestInfo.UserId) || String.IsNullOrEmpty(labTestInfo.DateOfEntry))
                 {
-                    log.LogInformation("Payload is missing a required parameter");
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
 
@@ -43,7 +41,6 @@ namespace BackToWorkFunctions
                 }
                 else
                 {
-                    log.LogInformation("Error in writing data to Azure SQL Database");
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
             }
@@ -60,7 +57,6 @@ namespace BackToWorkFunctions
             catch (Newtonsoft.Json.JsonSerializationException serializeEx)
             {
                 log.LogInformation(serializeEx.Message);
-                //var notFoundResponse = new HttpResponseMessage(HttpStatusCode.NotFound);
                 throw new Newtonsoft.Json.JsonSerializationException(serializeEx.ToString());
             }
             catch (Exception ex)

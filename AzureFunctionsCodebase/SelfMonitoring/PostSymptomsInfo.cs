@@ -19,19 +19,17 @@ namespace BackToWorkFunctions
         [FunctionName("PostSymptomsInfo")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestMessage req,
-            ILogger log, ExecutionContext context)
+            ILogger log)
         {
             try
             {
                 if (req == null)
                 {
-                    log.LogInformation("Null HttpRequestMessage");
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
-                SymptomsInfo symptomsInfo = await req.Content.ReadAsAsync<SymptomsInfo>();
+                SymptomsInfo symptomsInfo = await req.Content.ReadAsAsync<SymptomsInfo>().ConfigureAwait(false);
                 if (checkEmptyOrNull(symptomsInfo))
                 {
-                    log.LogInformation("Payload is missing a required parameter");
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
                 bool dataRecorded = DbHelper.PostDataAsync(symptomsInfo, Constants.postSymptomsInfo);
@@ -41,7 +39,6 @@ namespace BackToWorkFunctions
                 }
                 else
                 {
-                    log.LogInformation("Error in writing data to Azure SQL Database");
                     return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
             }
@@ -58,7 +55,6 @@ namespace BackToWorkFunctions
             catch(Newtonsoft.Json.JsonSerializationException serializeEx)
             {
                 log.LogInformation(serializeEx.Message);
-                //var notFoundResponse = new HttpResponseMessage(HttpStatusCode.NotFound);
                 throw new Newtonsoft.Json.JsonSerializationException(serializeEx.ToString());
             }
             catch (Exception ex)
@@ -71,7 +67,7 @@ namespace BackToWorkFunctions
         private static bool checkEmptyOrNull(SymptomsInfo symptomsInfo)
         {
             return symptomsInfo == null || String.IsNullOrEmpty(symptomsInfo.UserId) || String.IsNullOrEmpty(symptomsInfo.DateOfEntry)
-                    || String.IsNullOrEmpty(symptomsInfo.UserIsExposed.ToString()) || String.IsNullOrEmpty(symptomsInfo.IsSymptomatic.ToString())
+                    || (symptomsInfo.UserIsExposed == null) || String.IsNullOrEmpty(symptomsInfo.IsSymptomatic.ToString())
                     || String.IsNullOrEmpty(symptomsInfo.ClearToWorkToday.ToString());
         }
     }

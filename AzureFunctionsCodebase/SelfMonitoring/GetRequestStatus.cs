@@ -21,16 +21,16 @@ namespace BackToWorkFunctions
         [FunctionName("GetRequestStatus")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "GetRequestStatus/{UserId}")] HttpRequest req, string UserId,
-            ILogger log, ExecutionContext context)
+            ILogger log)
         {
-            if (String.IsNullOrEmpty(UserId))
+            if (req == null || String.IsNullOrEmpty(UserId))
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
 
             try
             {
-                RequestStatus requestStatus = await DbHelper.GetDataAsync<RequestStatus>(Constants.getRequestStatus, UserId);
+                RequestStatus requestStatus = await DbHelper.GetDataAsync<RequestStatus>(Constants.getRequestStatus, UserId).ConfigureAwait(false);
                 if (requestStatus == null)
                 {
                     return new HttpResponseMessage(HttpStatusCode.NotFound);

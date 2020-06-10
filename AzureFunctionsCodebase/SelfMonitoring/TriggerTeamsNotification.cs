@@ -11,7 +11,7 @@ namespace BackToWorkFunctions
 {
     public static class TriggerTeamsNotification
     {
-        [Disable]
+/*        [Disable]*/
         [FunctionName("TriggerTeamsNotification")]
         public static async Task Run([TimerTrigger("0 8 0 * * *")]TimerInfo myTimer, ILogger log)
         {

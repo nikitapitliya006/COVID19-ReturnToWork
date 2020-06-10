@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using BackToWorkFunctions.Model;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Net;
 
 namespace BackToWorkFunctions.Helper
 {
@@ -24,6 +25,7 @@ namespace BackToWorkFunctions.Helper
 
                 string URL = Environment.GetEnvironmentVariable("Healthbot_Trigger_Call", EnvironmentVariableTarget.Process);
                 HttpClient client = new HttpClient();
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 client.BaseAddress = new Uri(URL);
 
                 //Add an Authorization Bearer token (jwt token)
@@ -46,7 +48,15 @@ namespace BackToWorkFunctions.Helper
                     throw new Exception("Error in triggering scenario to Teams client");
                 }
                 client.Dispose();
-                
+
+            }
+            catch(ArgumentNullException argNullEx)
+            {
+                throw new Exception(argNullEx.ToString());
+            }
+            catch(HttpRequestException httpReqEx)
+            {
+                throw new Exception(httpReqEx.ToString());
             }
             catch (Exception ex)
             {
@@ -77,6 +87,14 @@ namespace BackToWorkFunctions.Helper
 
                 var tokenString = handler.WriteToken(secToken);
                 return tokenString;
+            }
+            catch(ArgumentNullException argNullEx)
+            {
+                throw new Exception(argNullEx.ToString());
+            }
+            catch(ArgumentOutOfRangeException argOutEx)
+            {
+                throw new Exception(argOutEx.ToString());
             }
             catch(Exception ex)
             {

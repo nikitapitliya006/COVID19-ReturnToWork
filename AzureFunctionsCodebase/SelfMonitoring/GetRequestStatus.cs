@@ -30,15 +30,15 @@ namespace BackToWorkFunctions
 
             try
             {
-                List<RequestStatus> lstrequestStatus = await DbHelper.GetDataAsync<List<RequestStatus>>(Constants.getRequestStatus, UserId);
-                if (lstrequestStatus == null)
+                RequestStatus requestStatus = await DbHelper.GetDataAsync<RequestStatus>(Constants.getRequestStatus, UserId);
+                if (requestStatus == null)
                 {
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
 
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(lstrequestStatus), Encoding.UTF8, "application/json")
+                    Content = new StringContent(JsonConvert.SerializeObject(requestStatus), Encoding.UTF8, "application/json")
                 };
             }
             catch (System.Exception ex)

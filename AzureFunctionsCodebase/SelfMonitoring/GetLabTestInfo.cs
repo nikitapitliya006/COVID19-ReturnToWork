@@ -32,15 +32,15 @@ namespace BackToWorkFunctions
 
             try
             {
-                List<LabTestInfo> lstlabTestInfo = await DbHelper.GetDataAsync<List<LabTestInfo>>(Constants.getLabTestInfo, UserId);
-                if (lstlabTestInfo == null)
+                LabTestInfo labTestInfo = await DbHelper.GetDataAsync<LabTestInfo>(Constants.getLabTestInfo, UserId);
+                if (labTestInfo == null)
                 {
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
 
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(lstlabTestInfo), Encoding.UTF8, "application/json")
+                    Content = new StringContent(JsonConvert.SerializeObject(labTestInfo), Encoding.UTF8, "application/json")
                 };
             }
             catch(System.Exception ex)

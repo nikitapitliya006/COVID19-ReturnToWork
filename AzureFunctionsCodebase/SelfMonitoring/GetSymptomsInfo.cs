@@ -30,15 +30,15 @@ namespace BackToWorkFunctions
 
             try
             {
-                List<SymptomsInfo> lstsymptomsInfo = await DbHelper.GetDataAsync<List<SymptomsInfo>>(Constants.getSymptomsInfo, UserId);
-                if (lstsymptomsInfo == null)
+                SymptomsInfo symptomsInfo = await DbHelper.GetDataAsync<SymptomsInfo>(Constants.getSymptomsInfo, UserId);
+                if (symptomsInfo == null)
                 {
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
                 
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(lstsymptomsInfo), Encoding.UTF8, "application/json")
+                    Content = new StringContent(JsonConvert.SerializeObject(symptomsInfo), Encoding.UTF8, "application/json")
                 };
             }
             catch(System.Exception ex)

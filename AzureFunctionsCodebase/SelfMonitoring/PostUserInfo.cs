@@ -8,6 +8,7 @@ using BackToWorkFunctions.Model;
 using System.Data.SqlClient;
 using BackToWorkFunctions.Helper;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 
 namespace BackToWorkFunctions
 {
@@ -67,7 +68,6 @@ namespace BackToWorkFunctions
                 log.LogInformation(ex.Message);
                 return new BadRequestObjectResult("Error: Something went wrong, could not save your details");
             }
-
         }
 
         private static bool checkEmptyOrNull(UserInfo userInfo)

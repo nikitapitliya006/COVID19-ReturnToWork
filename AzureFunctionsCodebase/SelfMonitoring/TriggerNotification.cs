@@ -27,24 +27,38 @@ namespace BackToWorkFunctions
 
                 if (myTimer.IsPastDue)
                 {
-                    errorMessage = "Timer is running late!";
-                    log.LogInformation(errorMessage);
+                    log.LogInformation("Timer is running late");
                 }
                 log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
-
+                
                 List<UserContactInfo> userContactInfoCollector = new List<UserContactInfo>();
                 bool userContactsRetrieved = DbHelper.GetUserContactInfo(userContactInfoCollector);
                 if (userContactsRetrieved)
                 {
                     string sendgridApi = Environment.GetEnvironmentVariable("SendGrid_APIKEY", EnvironmentVariableTarget.Process);
+                    if (String.IsNullOrEmpty(sendgridApi))
+                    {
+                        errorMessage = "SendGridAPI Key not found";
+                        throw new ArgumentNullException(errorMessage);
+                    }
                     string assessmentLink = Environment.GetEnvironmentVariable("AssessmentBotLink", EnvironmentVariableTarget.Process);
+                    if (String.IsNullOrEmpty(assessmentLink))
+                    {
+                        errorMessage = "Assessment Link not found";
+                        throw new ArgumentNullException(errorMessage);
+                    }
+
                     foreach (UserContactInfo userContact in userContactInfoCollector)
                     {
-                        NotificationHelper.SendEmail(userContact.EmailAddress, "admin@contosohealthsystem.onmicrosoft.com", "Contoso Health System Admin",
+                        bool emailSent = NotificationHelper.SendEmail(userContact.EmailAddress, "admin@contosohealthsystem.onmicrosoft.com", "Contoso Health System Admin",
                             assessmentLink, sendgridApi);
+                        if (!emailSent)
+                        {
+                            log.LogInformation($"Error: Email could not be sent to UserId = {0} at email address = {1}", userContact.UserId, userContact.EmailAddress);
+                        }
                     }
                 }
-                errorMessage = "Error in getting User details";
+                errorMessage = "Error in getting User details from database";
                 throw new Exception(errorMessage);
             }
             catch (ArgumentNullException argNullEx)

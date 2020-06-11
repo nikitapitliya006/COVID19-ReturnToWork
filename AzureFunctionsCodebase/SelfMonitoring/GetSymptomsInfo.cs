@@ -41,10 +41,25 @@ namespace BackToWorkFunctions
                     Content = new StringContent(JsonConvert.SerializeObject(symptomsInfo), Encoding.UTF8, "application/json")
                 };
             }
-            catch(System.Exception ex)
+            catch (ArgumentNullException argNullEx)
+            {
+                log.LogInformation(argNullEx.Message);
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+            catch (Newtonsoft.Json.JsonSerializationException serializeEx)
+            {
+                log.LogInformation(serializeEx.Message);
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+            catch (SqlException sqlEx)
+            {
+                log.LogInformation(sqlEx.Message);
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+            catch (Exception ex)
             {
                 log.LogInformation(ex.Message);
-                throw new Exception(ex.ToString());
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
         }
     }

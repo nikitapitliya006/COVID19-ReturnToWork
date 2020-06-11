@@ -10,75 +10,28 @@ namespace BackToWorkFunctions.Helper
 {   
     public static class NotificationHelper
     {
-        public static void SendEmail(string DestEmail, string SrcEmail, string AuthorName, string AssessmentLink, string SendGridAPIKey)
+        public static bool SendEmail(string DestEmail, string SrcEmail, string AuthorName, string AssessmentLink, string SendGridAPIKey)
         {
-            try
-            {
-                var EmailClient = new SendGridClient(SendGridAPIKey);
-                var EmailMessage = new SendGridMessage();
+            if(String.IsNullOrEmpty(DestEmail) || String.IsNullOrEmpty(SrcEmail) || String.IsNullOrEmpty(AuthorName) || String.IsNullOrEmpty(AssessmentLink) || String.IsNullOrEmpty(SendGridAPIKey))
+            { 
+                return false;
+            }
 
-                EmailMessage.SetFrom(new EmailAddress(SrcEmail, AuthorName));
-                EmailMessage.AddTo(DestEmail);
-                EmailMessage.SetSubject("Return To Work: Today's Assessment");
-                var MessageContent = "<p>Please take today's screening assessment before going to work, Thank you! \n\n <a href='" + AssessmentLink + "'>COVID-19 Return to Work Assessment</a> </p>";
-                EmailMessage.AddContent(MimeType.Html, MessageContent);
+            var EmailClient = new SendGridClient(SendGridAPIKey);
+            var EmailMessage = new SendGridMessage();
 
-                var EmailResponse = EmailClient.SendEmailAsync(EmailMessage).ConfigureAwait(false);
-/*                Console.Write(EmailResponse.StatusCode);*/
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.ToString());
-            }
-        }
+            EmailMessage.SetFrom(new EmailAddress(SrcEmail, AuthorName));
+            EmailMessage.AddTo(DestEmail);
+            EmailMessage.SetSubject("Return To Work: Today's Assessment");
+            var MessageContent = "<p>Please take today's screening assessment before going to work, Thank you! \n\n <a href='" + AssessmentLink + "'>COVID-19 Return to Work Assessment</a> </p>";
+            EmailMessage.AddContent(MimeType.Html, MessageContent);
 
-        public static void SendEmailWithQRCode(string DestEmail, string SrcEmail, string AuthorName, string imageBase64Encoding, string SendGridAPIKey)
-        {
-            try
+            var emailResponse = EmailClient.SendEmailAsync(EmailMessage).ConfigureAwait(false);
+            if(String.IsNullOrEmpty(emailResponse.ToString()))
             {
-                var EmailClient = new SendGridClient(SendGridAPIKey);
-                
-                var EmailMessage = new SendGridMessage();
-                EmailMessage.SetFrom(new EmailAddress(SrcEmail, AuthorName));
-                EmailMessage.AddTo(DestEmail);
-                EmailMessage.SetSubject("Return To Work: QR Code with Assessment Results");
-                var MessageContent = "<p>Thank you for taking Screening Assessment. Please use the QR Code attached to show at your facility entrance.\n\n </p>";                
-                EmailMessage.AddAttachment("qrcode.png", imageBase64Encoding);
-                EmailMessage.AddContent(MimeType.Html, MessageContent);
-
-                var EmailResponse = EmailClient.SendEmailAsync(EmailMessage);
-                Console.Write(EmailResponse);
+                return false;
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.ToString());
-            }
-        }
-
-        public static void GenerateQRCode(string GUIDforQR)
-        {
-            try
-            {
-                using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
-                {
-                    QRCodeData qrCodeData = qrGenerator.CreateQrCode(GUIDforQR, QRCodeGenerator.ECCLevel.Q);
-                    using (QRCode qrCode = new QRCode(qrCodeData))
-                    {
-                        Bitmap qrCodeImage = qrCode.GetGraphic(20);
-                        byte[] resultQR = null;
-                        using (MemoryStream stream = new MemoryStream())
-                        {
-                            qrCodeImage.Save(stream, ImageFormat.Png);
-                            resultQR = stream.ToArray();
-                        }
-                        string resultQRBase64 = Convert.ToBase64String(resultQR);
-                    }                    
-                }
-            }
-            catch(Exception ex)
-            {
-                throw new Exception(ex.ToString());
-            }
+            return true;            
         }
     }
 }

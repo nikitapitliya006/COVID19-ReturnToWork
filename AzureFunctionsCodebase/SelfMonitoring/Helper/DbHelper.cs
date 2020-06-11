@@ -5,6 +5,7 @@ using BackToWorkFunctions.Model;
 using System.Data.SqlClient;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyModel.Resolution;
+using System.IO;
 
 namespace BackToWorkFunctions.Helper
 {
@@ -12,11 +13,10 @@ namespace BackToWorkFunctions.Helper
     {
         public static bool PostDataAsync<T>(T model, string ops)
         {
-            string errorMsg = "";
+            string errorMsg;
             try
             {
-                string sqlConnectionString = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
-                
+                string sqlConnectionString = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);                
                 if (!String.IsNullOrEmpty(sqlConnectionString))
                 {
                     switch (ops)
@@ -32,8 +32,7 @@ namespace BackToWorkFunctions.Helper
                                     cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = typeof(T).GetProperty("UserId").GetValue(model);
                                     cmd.Parameters.Add("@FullName", SqlDbType.VarChar).Value = typeof(T).GetProperty("FullName").GetValue(model);
                                     cmd.Parameters.Add("@YearOfBirth", SqlDbType.Int).Value = typeof(T).GetProperty("YearOfBirth").GetValue(model);
-                                    cmd.Parameters.Add("@EmailAddress", SqlDbType.VarChar).Value = typeof(T).GetProperty("EmailAddress").GetValue(model);
-                                        
+                                    cmd.Parameters.Add("@EmailAddress", SqlDbType.VarChar).Value = typeof(T).GetProperty("EmailAddress").GetValue(model);                                        
                                     cmd.ExecuteNonQuery();
                                 }
                             }                       
@@ -50,8 +49,7 @@ namespace BackToWorkFunctions.Helper
                                         cmd.Parameters.Add("@DateOfEntry", SqlDbType.DateTime).Value = typeof(T).GetProperty("DateOfEntry").GetValue(model);
                                         cmd.Parameters.Add("@TestType", SqlDbType.VarChar).Value = typeof(T).GetProperty("TestType").GetValue(model);
                                         cmd.Parameters.Add("@TestDate", SqlDbType.DateTime).Value = typeof(T).GetProperty("TestDate").GetValue(model);
-                                        cmd.Parameters.Add("@TestResult", SqlDbType.VarChar).Value = typeof(T).GetProperty("TestResult").GetValue(model);
-                                        
+                                        cmd.Parameters.Add("@TestResult", SqlDbType.VarChar).Value = typeof(T).GetProperty("TestResult").GetValue(model);                                        
                                         cmd.ExecuteNonQuery();
                                     }
                                 }
@@ -67,7 +65,6 @@ namespace BackToWorkFunctions.Helper
                                         cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = typeof(T).GetProperty("UserId").GetValue(model);
                                         cmd.Parameters.Add("@DateOfEntry", SqlDbType.DateTime).Value = typeof(T).GetProperty("DateOfEntry").GetValue(model);
                                         cmd.Parameters.Add("@ReturnRequestStatus", SqlDbType.VarChar).Value = typeof(T).GetProperty("UserId").GetValue(model);
-
                                         cmd.ExecuteNonQuery();
                                     }
                                 }
@@ -100,7 +97,6 @@ namespace BackToWorkFunctions.Helper
                                         cmd.Parameters.Add("@UserIsSymptomatic", SqlDbType.Bit).Value = typeof(T).GetProperty("UserIsSymptomatic").GetValue(model);
                                         cmd.Parameters.Add("@ClearToWorkToday", SqlDbType.Bit).Value = typeof(T).GetProperty("ClearToWorkToday").GetValue(model);
                                         cmd.Parameters.Add("@GUID", SqlDbType.VarChar).Value = typeof(T).GetProperty("GUID").GetValue(model);
-
                                         cmd.ExecuteNonQuery();
                                     }
                                 }
@@ -110,9 +106,8 @@ namespace BackToWorkFunctions.Helper
                             throw new Exception(errorMsg);
                     }
                     return true;
-                }
-                
-                errorMsg = "SqlConnectionString not found in Configuration";
+                }                
+                errorMsg = "Error: SQL Connection Parameters not found in Configuration";
                 throw new ArgumentNullException(errorMsg);
             }
             catch (SqlException sqlEx)
@@ -131,9 +126,9 @@ namespace BackToWorkFunctions.Helper
 
         public static async Task<T> GetDataAsync<T>(string ops, string paramString)
         {
-            string errorMsg = "";
             try
             {
+                string errorMsg;
                 string sqlConnectionString = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
                 if (!String.IsNullOrEmpty(sqlConnectionString))
                 {
@@ -227,7 +222,6 @@ namespace BackToWorkFunctions.Helper
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = paramString;
-
                                     using (SqlDataReader reader = cmd.ExecuteReader())
                                     {
                                         if (reader != null)
@@ -254,7 +248,6 @@ namespace BackToWorkFunctions.Helper
                                                 symptomsInfo.UserIsSymptomatic = DBNull.Value.Equals(reader["UserIsSymptomatic"]) ? false : (bool)reader["UserIsSymptomatic"];
                                                 symptomsInfo.ClearToWorkToday = DBNull.Value.Equals(reader["ClearToWorkToday"]) ? false : (bool)reader["ClearToWorkToday"];
                                                 symptomsInfo.GUID = reader["GUID"].ToString();
-
                                             }
                                         }
                                         return (T)Convert.ChangeType(symptomsInfo, typeof(T));
@@ -266,14 +259,21 @@ namespace BackToWorkFunctions.Helper
                             throw new ArgumentNullException(errorMsg);                            
                     }
                 }
-                errorMsg = "SqlConnectionString not found in Configuration";
+                errorMsg = "Error: SQL Connection Parameters not found in Configuration";
                 throw new ArgumentNullException(errorMsg);
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.Message);
+            }
+            catch (ArgumentNullException argNullEx)
+            {
+                throw new ArgumentNullException(argNullEx.Message);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-
         }
 
         public static bool GetTeamsAddress(List<TeamsAddressQuarantineInfo> teamsAddressQuarantineInfoCollector)
@@ -284,31 +284,44 @@ namespace BackToWorkFunctions.Helper
                 {
                     throw new ArgumentNullException(nameof(teamsAddressQuarantineInfoCollector)); 
                 }
-                var sqlConnectionString = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
-                using (SqlConnection connection = new SqlConnection(sqlConnectionString))
+                string sqlConnectionString = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
+                if (!String.IsNullOrEmpty(sqlConnectionString))
                 {
-                    connection.Open();
-                    string spName = @"dbo.[GetAllTeamsAddress]";
-                    using (SqlCommand cmd = new SqlCommand(spName, connection))
+                    using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                     {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        connection.Open();
+                        string spName = @"dbo.[GetAllTeamsAddress]";
+                        using (SqlCommand cmd = new SqlCommand(spName, connection))
                         {
-                            if (reader != null)
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            using (SqlDataReader reader = cmd.ExecuteReader())
                             {
-                                while (reader.Read())
+                                if (reader != null)
                                 {
-                                    TeamsAddressQuarantineInfo teamsAddressQuarantineInfo = new TeamsAddressQuarantineInfo();
-                                    teamsAddressQuarantineInfo.UserId = reader["UserId"].ToString();
-                                    teamsAddressQuarantineInfo.TeamsAddress = reader["TeamsAddress"].ToString();
-                                    teamsAddressQuarantineInfoCollector.Add(teamsAddressQuarantineInfo);
+                                    while (reader.Read())
+                                    {
+                                        TeamsAddressQuarantineInfo teamsAddressQuarantineInfo = new TeamsAddressQuarantineInfo();
+                                        teamsAddressQuarantineInfo.UserId = reader["UserId"].ToString();
+                                        teamsAddressQuarantineInfo.TeamsAddress = reader["TeamsAddress"].ToString();
+                                        teamsAddressQuarantineInfoCollector.Add(teamsAddressQuarantineInfo);
+                                    }
+                                    return true;
                                 }
-                                return true;
+                                return false;
                             }
-                            return false;
                         }
-                    }                        
-                }                      
+                    }
+                }
+                string errorMsg = "Error: SQL Connection Parameters not found in Configuration";
+                throw new ArgumentNullException(errorMsg);
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.Message);
+            }
+            catch (ArgumentNullException argNullEx)
+            {
+                throw new ArgumentNullException(argNullEx.Message);
             }
             catch (Exception ex)
             {
@@ -324,37 +337,50 @@ namespace BackToWorkFunctions.Helper
                 {
                     throw new ArgumentNullException(nameof(userContactInfoCollector));
                 }
-                var sqlConnectionString = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
-                using (SqlConnection connection = new SqlConnection(sqlConnectionString))
+                string sqlConnectionString = Environment.GetEnvironmentVariable("SqlConnectionString", EnvironmentVariableTarget.Process);
+                if (!String.IsNullOrEmpty(sqlConnectionString))
                 {
-                    connection.Open();
-                    string spName = @"dbo.[GetAllUsersContactInfo]";
-                    using (SqlCommand cmd = new SqlCommand(spName, connection))
+                    using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                     {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        connection.Open();
+                        string spName = @"dbo.[GetAllUsersContactInfo]";
+                        using (SqlCommand cmd = new SqlCommand(spName, connection))
                         {
-                            if (reader != null)
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            using (SqlDataReader reader = cmd.ExecuteReader())
                             {
-                                while (reader.Read())
+                                if (reader != null)
                                 {
-                                    UserContactInfo userContactInfo = new UserContactInfo();
-                                    userContactInfo.UserId = reader["UserId"].ToString();
-                                    userContactInfo.FullName = reader["FullName"].ToString();
-                                    userContactInfo.EmailAddress = reader["EmailAddress"].ToString();
-                                    userContactInfo.MobilePhone = reader["MobileNumber"].ToString();
-                                    userContactInfoCollector.Add(userContactInfo);
+                                    while (reader.Read())
+                                    {
+                                        UserContactInfo userContactInfo = new UserContactInfo();
+                                        userContactInfo.UserId = reader["UserId"].ToString();
+                                        userContactInfo.FullName = reader["FullName"].ToString();
+                                        userContactInfo.EmailAddress = reader["EmailAddress"].ToString();
+                                        userContactInfo.MobilePhone = reader["MobileNumber"].ToString();
+                                        userContactInfoCollector.Add(userContactInfo);
+                                    }
+                                    return true;
                                 }
-                                return true;
+                                return false;
                             }
-                            return false;
                         }
                     }
                 }
+                string errorMsg = "Error: SQL Connection Parameters not found in Configuration";
+                throw new ArgumentNullException(errorMsg);
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.Message);
+            }
+            catch (ArgumentNullException argNullEx)
+            {
+                throw new ArgumentNullException(argNullEx.Message);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new Exception(ex.Message);
             }
         }
     }

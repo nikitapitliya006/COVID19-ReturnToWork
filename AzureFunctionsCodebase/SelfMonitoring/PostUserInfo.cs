@@ -1,25 +1,12 @@
 using System;
-using System.Data;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System.Net.Http;
-using System.Net;
 using BackToWorkFunctions.Model;
 using System.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using BackToWorkFunctions.Helper;
-using System.Web.Http;
-using System.Collections.Generic;
-using System;
-using System.Data;
-using System.Threading.Tasks;
-using BackToWorkFunctions.Model;
-using System.Data.SqlClient;
-using System.Collections.Generic;
-using Microsoft.Extensions.DependencyModel.Resolution;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackToWorkFunctions
@@ -27,7 +14,7 @@ namespace BackToWorkFunctions
     public static class PostUserInfo
     {
         [FunctionName("PostUserInfo")]
-        public static async Task<ActionResult> Run(
+        public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestMessage req, ILogger log)
         {            
             try
@@ -52,7 +39,7 @@ namespace BackToWorkFunctions
                 }
                 else
                 {
-                    return new BadRequestObjectResult("Error: Writing to database was not complete");
+                    return new BadRequestObjectResult("Error: Writing to database did not complete");
                 }
             }
             catch (HttpRequestException httpEx)
@@ -63,7 +50,7 @@ namespace BackToWorkFunctions
             catch (ArgumentNullException argNullEx)
             {
                 log.LogInformation(argNullEx.Message);
-                return new BadRequestObjectResult("Error: Writing to database was not complete");
+                return new BadRequestObjectResult("Error: Writing to database did not complete");
             }
             catch (Newtonsoft.Json.JsonSerializationException serializeEx)
             {
@@ -73,7 +60,7 @@ namespace BackToWorkFunctions
             catch (SqlException sqlEx)
             {
                 log.LogInformation(sqlEx.Message);                
-                return new BadRequestObjectResult("Error: Writing to database was not complete");
+                return new BadRequestObjectResult("Error: Writing to database did not complete");
             }
             catch (Exception ex)
             {

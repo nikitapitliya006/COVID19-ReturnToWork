@@ -18,7 +18,7 @@ namespace BackToWorkFunctions
     public static class PostRequestStatus
     {
         [FunctionName("PostRequestStatus")]
-        public static async Task<ActionResult> Run(
+        public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestMessage req,
             ILogger log)
         {
@@ -43,7 +43,7 @@ namespace BackToWorkFunctions
                 }
                 else
                 {
-                    return new BadRequestObjectResult("Error: Writing to database was not complete");
+                    return new BadRequestObjectResult("Error: Writing to database did not complete");
                 }
             }
             catch (HttpRequestException httpEx)
@@ -54,7 +54,7 @@ namespace BackToWorkFunctions
             catch (ArgumentNullException argNullEx)
             {
                 log.LogInformation(argNullEx.Message);
-                return new BadRequestObjectResult("Error: Writing to database was not complete");
+                return new BadRequestObjectResult("Error: Writing to database did not complete");
             }
             catch (Newtonsoft.Json.JsonSerializationException serializeEx)
             {
@@ -64,7 +64,7 @@ namespace BackToWorkFunctions
             catch (SqlException sqlEx)
             {
                 log.LogInformation(sqlEx.Message);
-                return new BadRequestObjectResult("Error: Writing to database was not complete");
+                return new BadRequestObjectResult("Error: Writing to database did not complete");
             }
             catch (Exception ex)
             {

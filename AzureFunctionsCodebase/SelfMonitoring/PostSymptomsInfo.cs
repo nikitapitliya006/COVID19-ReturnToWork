@@ -18,7 +18,7 @@ namespace BackToWorkFunctions
     public static class PostSymptomsInfo
     {
         [FunctionName("PostSymptomsInfo")]
-        public static async Task<ActionResult> Run(
+        public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestMessage req,
             ILogger log)
         {
@@ -40,7 +40,7 @@ namespace BackToWorkFunctions
                 }
                 else
                 {
-                    return new BadRequestObjectResult("Error: Writing to database was not complete");
+                    return new BadRequestObjectResult("Error: Writing to database did not complete");
                 }
             }
             catch (HttpRequestException httpEx)
@@ -51,7 +51,7 @@ namespace BackToWorkFunctions
             catch (ArgumentNullException argNullEx)
             {
                 log.LogInformation(argNullEx.Message);
-                return new BadRequestObjectResult("Error: Writing to database was not complete");
+                return new BadRequestObjectResult("Error: Writing to database did not complete");
             }
             catch (Newtonsoft.Json.JsonSerializationException serializeEx)
             {
@@ -61,7 +61,7 @@ namespace BackToWorkFunctions
             catch (SqlException sqlEx)
             {
                 log.LogInformation(sqlEx.Message);
-                return new BadRequestObjectResult("Error: Writing to database was not complete");
+                return new BadRequestObjectResult("Error: Writing to database did not complete");
             }
             catch (Exception ex)
             {
@@ -73,7 +73,7 @@ namespace BackToWorkFunctions
         private static bool checkEmptyOrNull(SymptomsInfo symptomsInfo)
         {
             return symptomsInfo == null || String.IsNullOrEmpty(symptomsInfo.UserId) || String.IsNullOrEmpty(symptomsInfo.DateOfEntry)
-                    || (symptomsInfo.UserIsExposed == null) || String.IsNullOrEmpty(symptomsInfo.IsSymptomatic.ToString())
+                    || String.IsNullOrEmpty(symptomsInfo.UserIsExposed.ToString()) || String.IsNullOrEmpty(symptomsInfo.IsSymptomatic.ToString())
                     || String.IsNullOrEmpty(symptomsInfo.ClearToWorkToday.ToString());
         }
     }

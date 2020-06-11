@@ -12,16 +12,17 @@ namespace BackToWorkFunctions
 {
     public static class TriggerNotification
     {
-/*        [Disable]*/
+        [Disable]
         [FunctionName("TriggerNotification")]
         public static void RunAsync([TimerTrigger("0 8 0 * * *")]TimerInfo myTimer, ILogger log)
-        {            
+        {
+            string errorMessage;
             try
-            {
-                string errorMessage;
+            {                
                 if (myTimer == null)
                 {
-/*                    return new BadRequestObjectResult("Error: Timer object missing");*/
+                    errorMessage = "Null timer argument";
+                    throw new ArgumentNullException(errorMessage);
                 }
 
                 if (myTimer.IsPastDue)
@@ -42,30 +43,19 @@ namespace BackToWorkFunctions
                         NotificationHelper.SendEmail(userContact.EmailAddress, "admin@contosohealthsystem.onmicrosoft.com", "Contoso Health System Admin",
                             assessmentLink, sendgridApi);
                     }
-/*                    return new OkObjectResult("Status: OK");*/
                 }
                 errorMessage = "Error in getting User details";
-           /*     return new BadRequestObjectResult(errorMessage);*/
+                throw new Exception(errorMessage);
             }
             catch (ArgumentNullException argNullEx)
             {
                 log.LogInformation(argNullEx.Message);
-/*                return new BadRequestObjectResult("Error: Writing to database was not complete");*/
-            }
-            catch (Newtonsoft.Json.JsonSerializationException serializeEx)
-            {
-                log.LogInformation(serializeEx.Message);
-/*                return new BadRequestObjectResult("Error: Incorrect payload");*/
-            }
-            catch (SqlException sqlEx)
-            {
-                log.LogInformation(sqlEx.Message);
-/*                return new BadRequestObjectResult("Error: Writing to database was not complete");*/
+                throw new ArgumentNullException(argNullEx.Message);
             }
             catch (Exception ex)
             {
                 log.LogInformation(ex.Message);
-/*                return new BadRequestObjectResult("Error: Something went wrong, could not save your details");*/
+                throw new Exception(ex.Message);
             }
         }
     }

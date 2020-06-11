@@ -6,6 +6,7 @@ using BackToWorkFunctions.Model;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace BackToWorkFunctions
 {
@@ -13,7 +14,7 @@ namespace BackToWorkFunctions
     {
 /*        [Disable]*/
         [FunctionName("TriggerNotification")]
-        public static void Run([TimerTrigger("0 8 0 * * *")]TimerInfo myTimer, ILogger log)
+        public static void RunAsync([TimerTrigger("0 8 0 * * *")]TimerInfo myTimer, ILogger log)
         {            
             try
             {

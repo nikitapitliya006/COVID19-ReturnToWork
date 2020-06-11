@@ -5,7 +5,7 @@ using QRCoder;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-
+using System.Threading.Tasks;
 namespace BackToWorkFunctions.Helper
 {   
     public static class NotificationHelper
@@ -23,7 +23,8 @@ namespace BackToWorkFunctions.Helper
                 var MessageContent = "<p>Please take today's screening assessment before going to work, Thank you! \n\n <a href='" + AssessmentLink + "'>COVID-19 Return to Work Assessment</a> </p>";
                 EmailMessage.AddContent(MimeType.Html, MessageContent);
 
-                var EmailResponse = EmailClient.SendEmailAsync(EmailMessage);                
+                var EmailResponse = EmailClient.SendEmailAsync(EmailMessage).ConfigureAwait(false);
+/*                Console.Write(EmailResponse.StatusCode);*/
             }
             catch (Exception ex)
             {

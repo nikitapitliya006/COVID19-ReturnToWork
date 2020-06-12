@@ -25,8 +25,7 @@ namespace BackToWorkFunctions.Helper
                             using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                             {
                                 connection.Open();
-                                string spName = @"dbo.[PostUserInfo]";
-                                using (SqlCommand cmd = new SqlCommand(spName, connection))
+                                using (SqlCommand cmd = new SqlCommand("PostUserInfo", connection))
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.Add("@UserId", SqlDbType.VarChar, 50).Value = typeof(T).GetProperty("UserId").GetValue(model);
@@ -42,8 +41,7 @@ namespace BackToWorkFunctions.Helper
                             using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                             {
                                 connection.Open();
-                                string spName = @"dbo.[PostLabTestInfo]";
-                                using (SqlCommand cmd = new SqlCommand(spName, connection))
+                                using (SqlCommand cmd = new SqlCommand("PostLabTestInfo", connection))
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.Add("@UserId", SqlDbType.VarChar, 50).Value = typeof(T).GetProperty("UserId").GetValue(model);
@@ -60,8 +58,7 @@ namespace BackToWorkFunctions.Helper
                              using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                             {
                                 connection.Open();
-                                string spName = @"dbo.[PostRequestStatus]";
-                                using (SqlCommand cmd = new SqlCommand(spName, connection))
+                                using (SqlCommand cmd = new SqlCommand("PostRequestStatus", connection))
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.Add("@UserId", SqlDbType.VarChar, 50).Value = typeof(T).GetProperty("UserId").GetValue(model);
@@ -76,8 +73,7 @@ namespace BackToWorkFunctions.Helper
                             using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                             {
                                 connection.Open();
-                                string spName = @"dbo.[PostSymptomsInfo]";
-                                using (SqlCommand cmd = new SqlCommand(spName, connection))
+                                using (SqlCommand cmd = new SqlCommand("PostSymptomsInfo", connection))
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.Add("@UserId", SqlDbType.VarChar, 50).Value = typeof(T).GetProperty("UserId").GetValue(model);
@@ -143,8 +139,7 @@ namespace BackToWorkFunctions.Helper
                             using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                             {
                                 connection.Open();
-                                string spName = @"dbo.[GetUserInfo]";
-                                using (SqlCommand cmd = new SqlCommand(spName, connection))
+                                using (SqlCommand cmd = new SqlCommand("GetUserInfo", connection))
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = paramString;
@@ -170,8 +165,7 @@ namespace BackToWorkFunctions.Helper
                             using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                             {
                                 connection.Open();
-                                string spName = @"dbo.[GetLabTestInfo]";
-                                using (SqlCommand cmd = new SqlCommand(spName, connection))
+                                using (SqlCommand cmd = new SqlCommand("GetLabTestInfo", connection))
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = paramString;
@@ -198,8 +192,7 @@ namespace BackToWorkFunctions.Helper
                             using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                             {
                                 connection.Open();
-                                string spName = @"dbo.[GetRequestStatus]";
-                                using (SqlCommand cmd = new SqlCommand(spName, connection))
+                                using (SqlCommand cmd = new SqlCommand("GetRequestStatus", connection))
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = paramString;
@@ -224,8 +217,7 @@ namespace BackToWorkFunctions.Helper
                             using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                             {
                                 connection.Open();
-                                string spName = @"dbo.[GetSymptomsInfo]";
-                                using (SqlCommand cmd = new SqlCommand(spName, connection))
+                                using (SqlCommand cmd = new SqlCommand("GetSymptomsInfo", connection))
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = paramString;
@@ -298,8 +290,7 @@ namespace BackToWorkFunctions.Helper
                     using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                     {
                         connection.Open();
-                        string spName = @"dbo.[GetAllTeamsAddress]";
-                        using (SqlCommand cmd = new SqlCommand(spName, connection))
+                        using (SqlCommand cmd = new SqlCommand("GetAllTeamsAddress", connection))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;                            
                             using (SqlDataReader reader = cmd.ExecuteReader())
@@ -351,8 +342,7 @@ namespace BackToWorkFunctions.Helper
                     using (SqlConnection connection = new SqlConnection(sqlConnectionString))
                     {
                         connection.Open();
-                        string spName = @"dbo.[GetAllUsersContactInfo]";
-                        using (SqlCommand cmd = new SqlCommand(spName, connection))
+                        using (SqlCommand cmd = new SqlCommand("GetAllUsersContactInfo", connection))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             using (SqlDataReader reader = cmd.ExecuteReader())

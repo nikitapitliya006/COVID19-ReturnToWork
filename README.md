@@ -15,11 +15,14 @@ Step-by-step instruction guide on using the Healthcare Bot template with Azure A
 
 ### 2. Azure SQL Database
 Follow instructions in Step 2 if you want to persist data in Azure SQL Database
+For step-by-step instructions, follow the [Azure SQL persistence specific README.md](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebchatChannel/README.md)
+Below you can find high level steps and upcoming custom options:
 
 ## Step 2: Choose your preferred UI channel
 Choose a UI channel to run this solution. Two options available using this GitHub are - Web Chat and Microsoft Teams (Instructions for using MS Teams are being refined)
 
 ### Web Chat Channel 
+
 
 #### Method 1: Use ARM templates to deploy required Azure services
 1. [Configure Healthcare Bot](https://github.com/nikitapitliya006/ReturnToWork/blob/master/WebchatChannel/1-Configure-HealthcareBot.md) host using web chat channel
@@ -59,6 +62,6 @@ List of Microsoft services required:
 
 
 ## Additional Resources
-* Step-by-step instructions on getting started are available [here](https://techcommunity.microsoft.com/t5/healthcare-and-life-sciences/updated-on-5-24-2020-quick-start-setting-up-your-covid-19/ba-p/1230537)
+- Step-by-step instructions on getting started with Microsoft Healthcare Bot service are available [here](https://techcommunity.microsoft.com/t5/healthcare-and-life-sciences/updated-on-5-24-2020-quick-start-setting-up-your-covid-19/ba-p/1230537)
 
-More resources to be updated regularly. ARM templates to automate configuration are being worked on and will be available soon
+More resources to be updated regularly. 

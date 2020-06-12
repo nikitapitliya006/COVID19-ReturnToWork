@@ -8,9 +8,25 @@ The COVID-19 Back-to-Work solution template is an ACCELERATOR KIT to help you qu
 
 ![](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Screenshots/referenceArchitecture.png)
 
+## Step 1: Choose your preferred data store
+### 1. Azure API for FHIR
+The Healthcare bot Back To Work template comes with built-in support for FHIR persistence. This is our primary recommendation for healthcare organizations to provide data interoperability from different health systems. 
+Step-by-step instruction guide on using the Healthcare Bot template with Azure API for FHIR are available [here](https://techcommunity.microsoft.com/t5/healthcare-and-life-sciences/using-the-covid-19-back-to-work-template-in-microsoft-healthcare/ba-p/1425833)
+
+### 2. Azure SQL Database
+Follow instructions in Step 2 if you want to persist data in Azure SQL Database
+
+## Step 2: Choose your preferred UI channel
 Choose a UI channel to run this solution. Two options available using this GitHub are - Web Chat and Microsoft Teams (Instructions for using MS Teams are being refined)
 
-## Web Chat Channel 
+### Web Chat Channel 
+
+#### Method 1: Use ARM templates to deploy required Azure services
+1. [Configure Healthcare Bot](https://github.com/nikitapitliya006/ReturnToWork/blob/master/WebchatChannel/1-Configure-HealthcareBot.md) host using web chat channel
+2. Use [ARM template](https://github.com/nikitapitliya006/ReturnToWork/blob/master/WebchatChannel/ARM-Deployment.md) to deploy required Azure SQL database and Azure Functions
+3. Create reports and dashboards with [Power BI for real-time visualization](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebchatChannel/5-Visualize-PowerBI.md)
+
+#### Method 2: Manual steps to help you understand all underlying details
 
 1. [Configure Healthcare Bot](https://github.com/nikitapitliya006/ReturnToWork/blob/master/WebchatChannel/1-Configure-HealthcareBot.md) host using web chat channel 
 2. [Create the backend Azure SQL Database](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/WebchatChannel/2-Createbackend-AzureSQLDatabase.md)
@@ -26,7 +42,7 @@ List of Microsoft services required:
 * Power BI Pro or Premium
 
 
-## Microsoft Teams Channel - This is a work in progress
+### Microsoft Teams Channel - This is a work in progress
 For using Microsoft Teams as a channel, follow steps 1-3 from Web Chat channel config. Then follow these steps:
 1. Integrate with [Microsoft Teams](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/TeamsChannel-WorkInProgress/Integrate-MicrosoftTeams.md)
 2. In the left pane of Healthcare bot admin portal, navigate to **Integration > Channels**. Click the activate toggle of the **Microsoft Teams** and Click **Save** to create the channel
@@ -44,6 +60,5 @@ List of Microsoft services required:
 
 ## Additional Resources
 * Step-by-step instructions on getting started are available [here](https://techcommunity.microsoft.com/t5/healthcare-and-life-sciences/updated-on-5-24-2020-quick-start-setting-up-your-covid-19/ba-p/1230537)
-* Step-by-step instructions on using the Healthcare Bot template with Azure API for FHIR are available [here](https://techcommunity.microsoft.com/t5/healthcare-and-life-sciences/using-the-covid-19-back-to-work-template-in-microsoft-healthcare/ba-p/1425833)
 
 More resources to be updated regularly. ARM templates to automate configuration are being worked on and will be available soon

@@ -29,77 +29,81 @@ namespace BackToWorkFunctions.Helper
                                 using (SqlCommand cmd = new SqlCommand(spName, connection))
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
-                                    cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = typeof(T).GetProperty("UserId").GetValue(model);
-                                    cmd.Parameters.Add("@FullName", SqlDbType.VarChar).Value = typeof(T).GetProperty("FullName").GetValue(model);
-                                    cmd.Parameters.Add("@YearOfBirth", SqlDbType.Int).Value = typeof(T).GetProperty("YearOfBirth").GetValue(model);
-                                    cmd.Parameters.Add("@EmailAddress", SqlDbType.VarChar).Value = typeof(T).GetProperty("EmailAddress").GetValue(model);                                        
+                                    cmd.Parameters.Add("@UserId", SqlDbType.VarChar, 50).Value = typeof(T).GetProperty("UserId").GetValue(model);
+                                    cmd.Parameters.Add("@FullName", SqlDbType.VarChar, 100).Value = typeof(T).GetProperty("FullName").GetValue(model);
+                                    cmd.Parameters.Add("@YearOfBirth", SqlDbType.Int, 4).Value = typeof(T).GetProperty("YearOfBirth").GetValue(model);
+                                    cmd.Parameters.Add("@EmailAddress", SqlDbType.VarChar, 100).Value = typeof(T).GetProperty("EmailAddress").GetValue(model);
+                                    cmd.Prepare();
                                     cmd.ExecuteNonQuery();
                                 }
                             }                       
                             break;
                         case Constants.postLabTestInfo:
                             using (SqlConnection connection = new SqlConnection(sqlConnectionString))
+                            {
+                                connection.Open();
+                                string spName = @"dbo.[PostLabTestInfo]";
+                                using (SqlCommand cmd = new SqlCommand(spName, connection))
                                 {
-                                    connection.Open();
-                                    string spName = @"dbo.[PostLabTestInfo]";
-                                    using (SqlCommand cmd = new SqlCommand(spName, connection))
-                                    {
-                                        cmd.CommandType = CommandType.StoredProcedure;
-                                        cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = typeof(T).GetProperty("UserId").GetValue(model);
-                                        cmd.Parameters.Add("@DateOfEntry", SqlDbType.DateTime).Value = typeof(T).GetProperty("DateOfEntry").GetValue(model);
-                                        cmd.Parameters.Add("@TestType", SqlDbType.VarChar).Value = typeof(T).GetProperty("TestType").GetValue(model);
-                                        cmd.Parameters.Add("@TestDate", SqlDbType.DateTime).Value = typeof(T).GetProperty("TestDate").GetValue(model);
-                                        cmd.Parameters.Add("@TestResult", SqlDbType.VarChar).Value = typeof(T).GetProperty("TestResult").GetValue(model);                                        
-                                        cmd.ExecuteNonQuery();
-                                    }
+                                    cmd.CommandType = CommandType.StoredProcedure;
+                                    cmd.Parameters.Add("@UserId", SqlDbType.VarChar, 50).Value = typeof(T).GetProperty("UserId").GetValue(model);
+                                    cmd.Parameters.Add("@DateOfEntry", SqlDbType.DateTime).Value = typeof(T).GetProperty("DateOfEntry").GetValue(model);
+                                    cmd.Parameters.Add("@TestType", SqlDbType.VarChar, 30).Value = typeof(T).GetProperty("TestType").GetValue(model);
+                                    cmd.Parameters.Add("@TestDate", SqlDbType.DateTime).Value = typeof(T).GetProperty("TestDate").GetValue(model);
+                                    cmd.Parameters.Add("@TestResult", SqlDbType.VarChar, 10).Value = typeof(T).GetProperty("TestResult").GetValue(model);
+                                    cmd.Prepare();
+                                    cmd.ExecuteNonQuery();
                                 }
+                            }
                             break;
                         case Constants.postRequestStatus:                           
                              using (SqlConnection connection = new SqlConnection(sqlConnectionString))
+                            {
+                                connection.Open();
+                                string spName = @"dbo.[PostRequestStatus]";
+                                using (SqlCommand cmd = new SqlCommand(spName, connection))
                                 {
-                                    connection.Open();
-                                    string spName = @"dbo.[PostRequestStatus]";
-                                    using (SqlCommand cmd = new SqlCommand(spName, connection))
-                                    {
-                                        cmd.CommandType = CommandType.StoredProcedure;
-                                        cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = typeof(T).GetProperty("UserId").GetValue(model);
-                                        cmd.Parameters.Add("@DateOfEntry", SqlDbType.DateTime).Value = typeof(T).GetProperty("DateOfEntry").GetValue(model);
-                                        cmd.Parameters.Add("@ReturnRequestStatus", SqlDbType.VarChar).Value = typeof(T).GetProperty("UserId").GetValue(model);
-                                        cmd.ExecuteNonQuery();
-                                    }
+                                    cmd.CommandType = CommandType.StoredProcedure;
+                                    cmd.Parameters.Add("@UserId", SqlDbType.VarChar, 50).Value = typeof(T).GetProperty("UserId").GetValue(model);
+                                    cmd.Parameters.Add("@DateOfEntry", SqlDbType.DateTime).Value = typeof(T).GetProperty("DateOfEntry").GetValue(model);
+                                    cmd.Parameters.Add("@ReturnRequestStatus", SqlDbType.VarChar, 10).Value = typeof(T).GetProperty("UserId").GetValue(model);
+                                    cmd.Prepare();
+                                    cmd.ExecuteNonQuery();
                                 }
+                            }
                             break;
                         case Constants.postSymptomsInfo:                            
                             using (SqlConnection connection = new SqlConnection(sqlConnectionString))
+                            {
+                                connection.Open();
+                                string spName = @"dbo.[PostSymptomsInfo]";
+                                using (SqlCommand cmd = new SqlCommand(spName, connection))
                                 {
-                                    connection.Open();
-                                    string spName = @"dbo.[PostSymptomsInfo]";
-                                    using (SqlCommand cmd = new SqlCommand(spName, connection))
-                                    {
-                                        cmd.CommandType = CommandType.StoredProcedure;
-                                        cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = typeof(T).GetProperty("UserId").GetValue(model);
-                                        cmd.Parameters.Add("@DateOfEntry", SqlDbType.DateTime).Value = typeof(T).GetProperty("DateOfEntry").GetValue(model);
-                                        cmd.Parameters.Add("@UserIsExposed", SqlDbType.Bit).Value = typeof(T).GetProperty("UserIsExposed").GetValue(model);
-                                        cmd.Parameters.Add("@ExposureDate", SqlDbType.DateTime).Value = typeof(T).GetProperty("ExposureDate").GetValue(model);
-                                        cmd.Parameters.Add("@QuarantineStartDate", SqlDbType.DateTime).Value = typeof(T).GetProperty("QuarantineStartDate").GetValue(model);
-                                        cmd.Parameters.Add("@QuarantineEndDate", SqlDbType.DateTime).Value = typeof(T).GetProperty("QuarantineEndDate").GetValue(model);
-                                        cmd.Parameters.Add("@IsSymptomatic", SqlDbType.Bit).Value = typeof(T).GetProperty("IsSymptomatic").GetValue(model);
-                                        cmd.Parameters.Add("@SymptomFever", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomFever").GetValue(model);
-                                        cmd.Parameters.Add("@SymptomCough", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomCough").GetValue(model);
-                                        cmd.Parameters.Add("@SymptomShortnessOfBreath", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomShortnessOfBreath").GetValue(model);
-                                        cmd.Parameters.Add("@SymptomChills", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomChills").GetValue(model);
-                                        cmd.Parameters.Add("@SymptomMusclePain", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomMusclePain").GetValue(model);
-                                        cmd.Parameters.Add("@SymptomSoreThroat", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomSoreThroat").GetValue(model);
-                                        cmd.Parameters.Add("@SymptomLossOfSmellTaste", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomLossOfSmellTaste").GetValue(model);
-                                        cmd.Parameters.Add("@SymptomVomiting", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomVomiting").GetValue(model);
-                                        cmd.Parameters.Add("@SymptomDiarrhea", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomDiarrhea").GetValue(model);
-                                        cmd.Parameters.Add("@Temperature", SqlDbType.Decimal).Value = typeof(T).GetProperty("Temperature").GetValue(model);
-                                        cmd.Parameters.Add("@UserIsSymptomatic", SqlDbType.Bit).Value = typeof(T).GetProperty("UserIsSymptomatic").GetValue(model);
-                                        cmd.Parameters.Add("@ClearToWorkToday", SqlDbType.Bit).Value = typeof(T).GetProperty("ClearToWorkToday").GetValue(model);
-                                        cmd.Parameters.Add("@GUID", SqlDbType.VarChar).Value = typeof(T).GetProperty("GUID").GetValue(model);
-                                        cmd.ExecuteNonQuery();
-                                    }
+                                    cmd.CommandType = CommandType.StoredProcedure;
+                                    cmd.Parameters.Add("@UserId", SqlDbType.VarChar, 50).Value = typeof(T).GetProperty("UserId").GetValue(model);
+                                    cmd.Parameters.Add("@DateOfEntry", SqlDbType.DateTime).Value = typeof(T).GetProperty("DateOfEntry").GetValue(model);
+                                    cmd.Parameters.Add("@UserIsExposed", SqlDbType.Bit).Value = typeof(T).GetProperty("UserIsExposed").GetValue(model);
+                                    cmd.Parameters.Add("@ExposureDate", SqlDbType.DateTime).Value = typeof(T).GetProperty("ExposureDate").GetValue(model);
+                                    cmd.Parameters.Add("@QuarantineStartDate", SqlDbType.DateTime).Value = typeof(T).GetProperty("QuarantineStartDate").GetValue(model);
+                                    cmd.Parameters.Add("@QuarantineEndDate", SqlDbType.DateTime).Value = typeof(T).GetProperty("QuarantineEndDate").GetValue(model);
+                                    cmd.Parameters.Add("@IsSymptomatic", SqlDbType.Bit).Value = typeof(T).GetProperty("IsSymptomatic").GetValue(model);
+                                    cmd.Parameters.Add("@SymptomFever", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomFever").GetValue(model);
+                                    cmd.Parameters.Add("@SymptomCough", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomCough").GetValue(model);
+                                    cmd.Parameters.Add("@SymptomShortnessOfBreath", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomShortnessOfBreath").GetValue(model);
+                                    cmd.Parameters.Add("@SymptomChills", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomChills").GetValue(model);
+                                    cmd.Parameters.Add("@SymptomMusclePain", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomMusclePain").GetValue(model);
+                                    cmd.Parameters.Add("@SymptomSoreThroat", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomSoreThroat").GetValue(model);
+                                    cmd.Parameters.Add("@SymptomLossOfSmellTaste", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomLossOfSmellTaste").GetValue(model);
+                                    cmd.Parameters.Add("@SymptomVomiting", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomVomiting").GetValue(model);
+                                    cmd.Parameters.Add("@SymptomDiarrhea", SqlDbType.Bit).Value = typeof(T).GetProperty("SymptomDiarrhea").GetValue(model);
+                                    cmd.Parameters.Add("@Temperature", SqlDbType.Decimal).Value = typeof(T).GetProperty("Temperature").GetValue(model);
+                                    cmd.Parameters.Add("@UserIsSymptomatic", SqlDbType.Bit).Value = typeof(T).GetProperty("UserIsSymptomatic").GetValue(model);
+                                    cmd.Parameters.Add("@ClearToWorkToday", SqlDbType.Bit).Value = typeof(T).GetProperty("ClearToWorkToday").GetValue(model);
+                                    cmd.Parameters.Add("@GUID", SqlDbType.VarChar).Value = typeof(T).GetProperty("GUID").GetValue(model);
+                                    cmd.Prepare();
+                                    cmd.ExecuteNonQuery();
                                 }
+                            }
                             break;
                         default:
                             errorMsg = "Error in writing data to database";
@@ -144,6 +148,7 @@ namespace BackToWorkFunctions.Helper
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = paramString;
+                                    cmd.Prepare();
                                     using (SqlDataReader reader = cmd.ExecuteReader())
                                     {
                                         if (reader != null)
@@ -170,6 +175,7 @@ namespace BackToWorkFunctions.Helper
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = paramString;
+                                    cmd.Prepare();
                                     using (SqlDataReader reader = cmd.ExecuteReader())
                                     {
                                         if (reader != null)
@@ -197,6 +203,7 @@ namespace BackToWorkFunctions.Helper
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = paramString;
+                                    cmd.Prepare();
                                     using (SqlDataReader reader = cmd.ExecuteReader())
                                     {
                                         if (reader != null)
@@ -222,6 +229,7 @@ namespace BackToWorkFunctions.Helper
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = paramString;
+                                    cmd.Prepare();
                                     using (SqlDataReader reader = cmd.ExecuteReader())
                                     {
                                         if (reader != null)
@@ -293,7 +301,7 @@ namespace BackToWorkFunctions.Helper
                         string spName = @"dbo.[GetAllTeamsAddress]";
                         using (SqlCommand cmd = new SqlCommand(spName, connection))
                         {
-                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.CommandType = CommandType.StoredProcedure;                            
                             using (SqlDataReader reader = cmd.ExecuteReader())
                             {
                                 if (reader != null)

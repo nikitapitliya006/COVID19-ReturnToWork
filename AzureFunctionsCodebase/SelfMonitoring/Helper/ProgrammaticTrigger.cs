@@ -16,7 +16,7 @@ namespace BackToWorkFunctions.Helper
     public static class ProgrammaticTrigger
     {        
         public static async Task<bool> PostTriggerToAllRegisteredTeamsClients(string UserId, string teamsAddress,
-            string triggerUri, string scenarioId, string healthbotApiJwtSecret, string healthbotTenantName)
+            System.Uri triggerUri, string scenarioId, string healthbotApiJwtSecret, string healthbotTenantName)
         {            
             try
             {
@@ -27,7 +27,7 @@ namespace BackToWorkFunctions.Helper
                 
                 HttpClient client = new HttpClient();
                 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 ;
-                client.BaseAddress = new Uri(triggerUri);
+                client.BaseAddress = triggerUri;
 
                 //Add an Authorization Bearer token (jwt token)
                 string partial_token = GetJwtToken(healthbotApiJwtSecret, healthbotTenantName);
@@ -88,6 +88,10 @@ namespace BackToWorkFunctions.Helper
 
                 var tokenString = handler.WriteToken(secToken);
                 return tokenString;
+            }
+            catch(ArgumentNullException argNullEx)
+            {
+                throw new ArgumentNullException(argNullEx.ToString());
             }
             catch(Exception ex)
             {

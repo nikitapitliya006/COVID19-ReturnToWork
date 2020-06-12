@@ -35,8 +35,8 @@ namespace BackToWorkFunctions
                 bool userTeamsAddressReceived = DbHelper.GetTeamsAddress(teamsAddressQuarantineInfoCollector);
                 if (userTeamsAddressReceived)
                 {
-                    string triggerUri = Environment.GetEnvironmentVariable("Healthbot_Trigger_Call", EnvironmentVariableTarget.Process);
-                    if (String.IsNullOrEmpty(triggerUri))
+                    Uri triggerUri = new System.Uri(Environment.GetEnvironmentVariable("Healthbot_Trigger_Call", EnvironmentVariableTarget.Process));
+                    if (String.IsNullOrEmpty(triggerUri.ToString()))
                     {
                         errorMessage = "Healthbot Trigger Uri not found";
                         throw new ArgumentNullException(errorMessage);

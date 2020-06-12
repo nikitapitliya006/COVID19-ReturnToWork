@@ -80,7 +80,7 @@
       },
       "masterBacpacUrl": {
         "type": "string",
-        "defaultValue": "https://saadflabblob.blob.core.windows.net/returntowork/BackToWorkTables.bacpac"
+        "defaultValue": "https://saadflabblob.blob.core.windows.net/backtowork/BackToWorkTables.bacpac"
       }
     },
     "variables": {

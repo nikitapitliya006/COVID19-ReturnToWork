@@ -9,4 +9,10 @@ The PBIT included in this GitHub is intended to be a Quick-Start for your own re
 5. Refresh Power BI Desktop.
 6. Use the report in Power BI Desktop, or publish it to the Power BI Cloud.
 
+Here are few sample screenshots for quick reference:
+![](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Screenshots/PBIExecutiveReport.png)
+
+![](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Screenshots/PBIScreeningReport.png)
+
+![](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Screenshots/PBIRegionalReport.png)
 

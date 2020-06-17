@@ -2,12 +2,12 @@
 
 The PBIT included in this GitHub is intended to be a Quick-Start for your own reporting. In order to use it:
 
-1. Download the .pbit file (To be updated shortly)
-2. Open the file using the most recent version of Power BI Desktop. 
-3. On the ribbon, select "Transform Data" and "Data Source Settings."
-4. Enter in the connection information for your instance of Azure SQL DB.
-5. Refresh Power BI Desktop.
-6. Use the report in Power BI Desktop, or publish it to the Power BI Cloud.
+1. Download the Power BI template file "Return to Work.pbix" from [Scripts](https://github.com/nikitapitliya006/COVID19-ReturnToWork/tree/master/Scripts) folder
+2. Open the file using the most recent version of Power BI Desktop
+3. On the ribbon, select "Transform Data" and "Data Source Settings"
+4. Enter in the connection information for your instance of Azure SQL DB
+5. Refresh Power BI Desktop
+6. Use the report in Power BI Desktop, or publish it to the Power BI Cloud
 
 Here are few sample screenshots for quick reference:
 ![](https://github.com/nikitapitliya006/COVID19-ReturnToWork/blob/master/Screenshots/PBIExecutiveReport.png)
